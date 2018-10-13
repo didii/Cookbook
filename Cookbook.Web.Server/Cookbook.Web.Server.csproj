@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cookbook.Business\Cookbook.Business.csproj" />
     <ProjectReference Include="..\Cookbook.Web.Client\Cookbook.Web.Client.csproj" />
-    <ProjectReference Include="..\Cookbook.Web.Shared\Cookbook.Web.Shared.csproj" />
   </ItemGroup>
 
 </Project>

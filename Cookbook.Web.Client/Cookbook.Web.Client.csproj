@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Cookbook.Web.Shared\Cookbook.Web.Shared.csproj" />
+    <ProjectReference Include="..\Cookbook.Dtos\Cookbook.Dtos.csproj" />
   </ItemGroup>
 
 </Project>
