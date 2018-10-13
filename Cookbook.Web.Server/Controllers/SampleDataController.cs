@@ -1,15 +1,13 @@
-﻿using Cookbook.Web.Shared;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cookbook.Web.Shared;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Cookbook.Web.Server.Controllers {
     [Route("api/[controller]")]
     public class SampleDataController : Controller {
-        private static string[] Summaries = new[]
-        {
+        private static string[] Summaries = new[] {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 

@@ -1,11 +1,10 @@
+using System.Linq;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Serialization;
-using System.Linq;
-using System.Net.Mime;
 
 namespace Cookbook.Web.Server {
     public class Startup {
@@ -15,8 +14,7 @@ namespace Cookbook.Web.Server {
             services.AddMvc();
 
             services.AddResponseCompression(options => {
-                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
-                {
+                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] {
                     MediaTypeNames.Application.Octet,
                     WasmMediaTypeNames.Application.Wasm,
                 });
@@ -31,9 +29,7 @@ namespace Cookbook.Web.Server {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc(routes => {
-                routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
-            });
+            app.UseMvc(routes => { routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}"); });
 
             app.UseBlazor<Client.Startup>();
         }

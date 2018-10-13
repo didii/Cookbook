@@ -8,6 +8,6 @@ namespace Cookbook.Web.Client {
 
         public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
             BlazorWebAssemblyHost.CreateDefaultBuilder()
-                .UseBlazorStartup<Startup>();
+                                 .UseBlazorStartup<Startup>();
     }
 }
