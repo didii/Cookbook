@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cookbook.Web.Shared;
+using Cookbook.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cookbook.Web.Server.Controllers {
