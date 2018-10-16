@@ -1,0 +1,39 @@
+﻿@page "/testpage"
+@inject HttpClient Http
+
+<h1>Test page</h1>
+
+<DetailTable Items="@pets">
+    <HeaderTemplate>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+    </HeaderTemplate>
+    <RowTemplate Context="context">
+        <td><input value="@context.Name" placeholder="Name" class="form-control" /></td>
+        <td><input value="@context.Description" placeholder="Description" class="form-control" /></td>
+    </RowTemplate>
+</DetailTable>
+
+@functions {
+
+    public class Pet : IIdProperty {
+        public long Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    IEnumerable<FoodDto> pets = new[] {
+        new FoodDto() { Id = 1, Name = "Gizmo" },
+        new FoodDto() { Id = 2, Name = "Baileys" },
+        new FoodDto() { Id = 3, Name = "Pino" },
+        new FoodDto() { Id = 4, Name = "BauBau" },
+        new FoodDto() { Id = 5, Name = "Portos" },
+        new FoodDto() { Id = 6, Name = "Poesje" },
+    };
+
+    Action onDelete(Pet pet) {
+        return async () => {
+            await Http.DeleteAsync("testpage/" + pet.Id);
+        };
+    }
+
+}

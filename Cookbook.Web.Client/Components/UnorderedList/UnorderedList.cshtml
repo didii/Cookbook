@@ -1,0 +1,18 @@
+﻿<ul>
+    @foreach (var item in Items) {
+
+        <li>@DisplayPredicate(item)</li>
+
+    }
+</ul>
+
+
+@functions {
+
+    [Parameter]
+    private IEnumerable<object> Items { get; set; }
+
+    [Parameter]
+    private Func<object, string> DisplayPredicate { get; set; } = x => x.ToString();
+
+}

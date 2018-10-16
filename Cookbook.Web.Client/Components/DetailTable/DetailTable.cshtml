@@ -1,0 +1,75 @@
+﻿@typeparam TItem
+
+@inject HttpClient http
+@inject IUriHelper uriHelper
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            @HeaderTemplate
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Items) {
+            <tr>
+                <th scope="row">@(((IIdProperty)item).Id)</th>
+                @RowTemplate(item)
+                <td>
+                    <button onclick="@OnSave(item)" class="btn btn-light">S</button>
+                    <button onclick="@OnDelete(item)" class="btn btn-danger">-</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td></td>
+            @RowTemplate(NewItem)
+            <td>
+                <button onclick="@OnAdd" class="btn btn-success">+</button>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+@functions {
+
+    [Parameter]
+    private RenderFragment HeaderTemplate { get; set; }
+
+    [Parameter]
+    private RenderFragment<TItem> RowTemplate { get; set; }
+
+    [Parameter]
+    private RenderFragment FooterTemplate { get; set; }
+
+    [Parameter]
+    private IEnumerable<TItem> Items { get; set; }
+
+    private TItem NewItem { get; set; } = (TItem)Activator.CreateInstance(typeof(TItem));
+
+    private Action OnSave(TItem item) {
+        var id = ((IIdProperty)item).Id;
+        return async () => {
+            var uri = uriHelper.GetAbsoluteUri();
+            Console.WriteLine(uri);
+        };
+    }
+
+    private Action OnDelete(TItem item) {
+        var id = ((IIdProperty)item).Id;
+        return async () => {
+            await http.DeleteAsync("./" + id);
+            Console.WriteLine("Deleted " + id);
+        };
+    }
+
+    private async void OnAdd() {
+        //await http.PostAsync(".", new StringContent(JsonConvert.Serialize(NewItem)));
+        Console.WriteLine("Added a new item");
+    }
+}
