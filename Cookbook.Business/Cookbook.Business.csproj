@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\FluentValidator\FluentValidator\FluentValidator.csproj" />
     <ProjectReference Include="..\Cookbook.Db\Cookbook.Db.csproj" />
     <ProjectReference Include="..\Cookbook.Dtos\Cookbook.Dtos.csproj" />
   </ItemGroup>
