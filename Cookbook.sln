@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Web.Server", "Cookbook.Web.Server\Cookbook.Web.Server.csproj", "{9E4B8C35-3493-413E-BB53-7D639A9D631C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Web.Server", "Cookbook.Web.Server\Cookbook.Web.Server.csproj", "{9E4B8C35-3493-413E-BB53-7D639A9D631C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Web.Client", "Cookbook.Web.Client\Cookbook.Web.Client.csproj", "{CF971CA7-6481-4A79-BDC1-47D559DBDF9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Web.Client", "Cookbook.Web.Client\Cookbook.Web.Client.csproj", "{CF971CA7-6481-4A79-BDC1-47D559DBDF9F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Items", "00 Solution Items", "{3CECC5A6-CFAB-400E-802B-ABAAC2ECDCF5}"
 EndProject
@@ -19,15 +19,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Application Layer", "04 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06 Tests", "06 Tests", "{E4DA6B1D-0918-48F3-848A-4AF5313F5790}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Business", "Cookbook.Business\Cookbook.Business.csproj", "{B45DD9DF-2C5D-4340-BFD0-A700BE639AE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Business", "Cookbook.Business\Cookbook.Business.csproj", "{B45DD9DF-2C5D-4340-BFD0-A700BE639AE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Dtos", "Cookbook.Dtos\Cookbook.Dtos.csproj", "{FC215885-0BE3-4808-861F-1646A13000D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Dtos", "Cookbook.Dtos\Cookbook.Dtos.csproj", "{FC215885-0BE3-4808-861F-1646A13000D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Db", "Cookbook.Db\Cookbook.Db.csproj", "{F49E78C2-43D6-409A-858C-F1DB6DBD0EC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Db", "Cookbook.Db\Cookbook.Db.csproj", "{F49E78C2-43D6-409A-858C-F1DB6DBD0EC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Infrastructure", "Cookbook.Infrastructure\Cookbook.Infrastructure.csproj", "{C3252B9D-2CDA-4951-84F7-5A861C620034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Infrastructure", "Cookbook.Infrastructure\Cookbook.Infrastructure.csproj", "{C3252B9D-2CDA-4951-84F7-5A861C620034}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Domain", "Cookbook.Domain\Cookbook.Domain.csproj", "{644403E7-6BFB-4D3A-8114-512AB2A88439}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Domain", "Cookbook.Domain\Cookbook.Domain.csproj", "{644403E7-6BFB-4D3A-8114-512AB2A88439}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Web", "05 Web", "{3CEB3262-A1A0-4ECC-B8BA-F4E2273C3FE7}"
 EndProject
@@ -38,6 +38,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Web.Client.Tests", "Cookbook.Web.Client.Tests\Cookbook.Web.Client.Tests.csproj", "{DFFB002A-3A13-4C21-9B75-4AB2CFE7FD99}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Web.Server.Tests", "Cookbook.Web.Server.Tests\Cookbook.Web.Server.Tests.csproj", "{B405DDB6-E65D-4283-B3D8-676181D628A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "07 Libraries", "07 Libraries", "{780368F5-398F-442F-947D-898E1D3C7501}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentValidator", "..\FluentValidator\FluentValidator\FluentValidator.csproj", "{93737FF7-A252-4B30-BA5E-6342708AE066}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +93,10 @@ Global
 		{B405DDB6-E65D-4283-B3D8-676181D628A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B405DDB6-E65D-4283-B3D8-676181D628A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B405DDB6-E65D-4283-B3D8-676181D628A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93737FF7-A252-4B30-BA5E-6342708AE066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93737FF7-A252-4B30-BA5E-6342708AE066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93737FF7-A252-4B30-BA5E-6342708AE066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93737FF7-A252-4B30-BA5E-6342708AE066}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +113,7 @@ Global
 		{619A2A8F-ECFD-4290-B999-67ABD5F7F56F} = {E4DA6B1D-0918-48F3-848A-4AF5313F5790}
 		{DFFB002A-3A13-4C21-9B75-4AB2CFE7FD99} = {E4DA6B1D-0918-48F3-848A-4AF5313F5790}
 		{B405DDB6-E65D-4283-B3D8-676181D628A7} = {E4DA6B1D-0918-48F3-848A-4AF5313F5790}
+		{93737FF7-A252-4B30-BA5E-6342708AE066} = {780368F5-398F-442F-947D-898E1D3C7501}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {951784C3-F08A-40BA-9278-FEA26B649E79}
