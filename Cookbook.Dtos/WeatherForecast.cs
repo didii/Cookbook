@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cookbook.Web.Shared {
+namespace Cookbook.Dtos {
     public class WeatherForecast {
         public DateTime Date { get; set; }
         public int TemperatureC { get; set; }
