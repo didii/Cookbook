@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "defaultDestination": "wwwroot/lib/",
+  "libraries": [
+    {
+      "provider": "cdnjs",
+      "library": "twitter-bootstrap@4.1.3",
+      "destination": "wwwroot/lib/twitter-bootstrap/",
+      "files": [
+        "js/bootstrap.min.js",
+        "css/bootstrap.min.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@4.7.0",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/font-awesome.min.css",
+        "fonts/fontawesome-webfont.ttf"
+      ]
+    }
+  ]
+}
