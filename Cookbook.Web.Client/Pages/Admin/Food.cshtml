@@ -1,0 +1,49 @@
+﻿@page "/admin/food"
+@inject HttpClient Http
+
+<h1>Test page</h1>
+
+<DetailTable Items="@pets" OnSave="OnSave" OnDelete="OnDelete" OnAdd="OnAdd">
+    <HeaderTemplate>
+        <th scope="col">Name</th>
+        <th scope="col">Plural name</th>
+        <th scope="col">Description</th>
+    </HeaderTemplate>
+    <RowTemplate Context="context">
+        <td><input value="@context.Name" class="form-control" /></td>
+        <td><input value="@context.NamePlural" class="form-control" /></td>
+        <td><input value="@context.Description" class="form-control" /></td>
+    </RowTemplate>
+    <FooterTemplate>
+        <td><input bind="@_newItem.Name" class="form-control"/></td>
+        <td><input bind="@_newItem.NamePlural" class="form-control"/></td>
+        <td><input bind="@_newItem.Description" class="form-control"/></td>
+    </FooterTemplate>
+</DetailTable>
+
+@functions {
+
+    IEnumerable<FoodDto> pets = new[] {
+        new FoodDto() { Id = 1, Name = "Gizmo" },
+        new FoodDto() { Id = 2, Name = "Baileys" },
+        new FoodDto() { Id = 3, Name = "Pino" },
+        new FoodDto() { Id = 4, Name = "BauBau" },
+        new FoodDto() { Id = 5, Name = "Portos" },
+        new FoodDto() { Id = 6, Name = "Poesje" },
+    };
+
+    async void OnAdd() {
+        await Http.PostJsonAsync("testpage", _newItem);
+    }
+
+    async void OnSave(FoodDto food) {
+        await Http.PutJsonAsync("testpage/" + food.Id, food);
+    }
+
+    async void OnDelete(FoodDto food) {
+        await Http.DeleteAsync("testpage/" + food.Id);
+    }
+
+    private FoodDto _newItem = new FoodDto();
+
+}

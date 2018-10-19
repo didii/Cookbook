@@ -97,3 +97,7 @@ app {
         display: block;
     }
 }
+
+.nav .nav-item .fa {
+    margin-right: 5px;
+}
