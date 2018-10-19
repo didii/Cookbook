@@ -14,11 +14,11 @@
     <tbody>
         @foreach (var item in Items) {
             <tr>
-                <th scope="row">@(((IIdProperty)item).Id)</th>
+                <th scope="row" class="align-middle">@(((IIdProperty)item).Id)</th>
                 @RowTemplate(item)
                 <td>
-                    <button onclick="@OnSave(item)" class="btn btn-light">S</button>
-                    <button onclick="@OnDelete(item)" class="btn btn-danger">-</button>
+                    <button onclick="@(_ => OnSave?.Invoke(item))" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                    <button onclick="@(_ => OnDelete?.Invoke(item))" class="btn btn-danger"><i class="fa fa-times"></i></button>
                 </td>
             </tr>
         }
@@ -26,9 +26,9 @@
     <tfoot>
         <tr>
             <td></td>
-            @RowTemplate(NewItem)
+            @FooterTemplate
             <td>
-                <button onclick="@OnAdd" class="btn btn-success">+</button>
+                <button onclick="@(_ => OnAdd?.Invoke())" class="btn btn-success"><i class="fa fa-plus"></i></button>
             </td>
         </tr>
     </tfoot>
@@ -38,6 +38,11 @@
 
 @functions {
 
+    //Data
+    [Parameter]
+    private IEnumerable<TItem> Items { get; set; }
+
+    //Templates
     [Parameter]
     private RenderFragment HeaderTemplate { get; set; }
 
@@ -47,29 +52,15 @@
     [Parameter]
     private RenderFragment FooterTemplate { get; set; }
 
+    //Events
     [Parameter]
-    private IEnumerable<TItem> Items { get; set; }
+    private Action<TItem> OnSave { get; set; }
+
+    [Parameter]
+    private Action<TItem> OnDelete { get; set; }
+
+    [Parameter]
+    private Action OnAdd { get; set; }
 
     private TItem NewItem { get; set; } = (TItem)Activator.CreateInstance(typeof(TItem));
-
-    private Action OnSave(TItem item) {
-        var id = ((IIdProperty)item).Id;
-        return async () => {
-            var uri = uriHelper.GetAbsoluteUri();
-            Console.WriteLine(uri);
-        };
-    }
-
-    private Action OnDelete(TItem item) {
-        var id = ((IIdProperty)item).Id;
-        return async () => {
-            await http.DeleteAsync("./" + id);
-            Console.WriteLine("Deleted " + id);
-        };
-    }
-
-    private async void OnAdd() {
-        //await http.PostAsync(".", new StringContent(JsonConvert.Serialize(NewItem)));
-        Console.WriteLine("Added a new item");
-    }
 }
