@@ -35,6 +35,20 @@ namespace Cookbook.Db.Contexts {
         }
 
         /// <inheritdoc />
+        public override int SaveChanges() {
+            var now = DateTime.Now;
+            foreach (var entry in ChangeTracker.Entries()) {
+                if (entry.State == EntityState.Added) {
+                    if (entry.Entity is ITracable tracable) {
+                        tracable.CreatedOn = now;
+                        tracable.UpdatedOn = now;
+                    }
+                }
+            }
+            return base.SaveChanges();
+        }
+
+        /// <inheritdoc />
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             base.OnConfiguring(optionsBuilder);
         }
