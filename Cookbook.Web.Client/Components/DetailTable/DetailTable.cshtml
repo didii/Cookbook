@@ -26,9 +26,9 @@
     <tfoot>
         <tr>
             <td></td>
-            @FooterTemplate
+            @RowTemplate(NewItem)
             <td>
-                <button onclick="@(_ => OnAdd?.Invoke())" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                <button onclick="@(_ => OnAdd?.Invoke(NewItem))" class="btn btn-success"><i class="fa fa-plus"></i></button>
             </td>
         </tr>
     </tfoot>
@@ -49,9 +49,6 @@
     [Parameter]
     private RenderFragment<TItem> RowTemplate { get; set; }
 
-    [Parameter]
-    private RenderFragment FooterTemplate { get; set; }
-
     //Events
     [Parameter]
     private Action<TItem> OnSave { get; set; }
@@ -60,7 +57,7 @@
     private Action<TItem> OnDelete { get; set; }
 
     [Parameter]
-    private Action OnAdd { get; set; }
+    private Action<TItem> OnAdd { get; set; }
 
     private TItem NewItem { get; set; } = (TItem)Activator.CreateInstance(typeof(TItem));
 }

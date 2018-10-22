@@ -10,15 +10,10 @@
         <th scope="col">Description</th>
     </HeaderTemplate>
     <RowTemplate Context="context">
-        <td><input value="@context.Name" class="form-control" /></td>
-        <td><input value="@context.NamePlural" class="form-control" /></td>
-        <td><input value="@context.Description" class="form-control" /></td>
+        <td><input bind="@context.Name" value="@context.Name" class="form-control" /></td>
+        <td><input bind="@context.NamePlural" value="@context.NamePlural" class="form-control" /></td>
+        <td><input bind="@context.Description" value="@context.Description" class="form-control" /></td>
     </RowTemplate>
-    <FooterTemplate>
-        <td><input bind="@_newItem.Name" class="form-control"/></td>
-        <td><input bind="@_newItem.NamePlural" class="form-control"/></td>
-        <td><input bind="@_newItem.Description" class="form-control"/></td>
-    </FooterTemplate>
 </DetailTable>
 
 @functions {
@@ -32,8 +27,8 @@
         new FoodDto() { Id = 6, Name = "Poesje" },
     };
 
-    async void OnAdd() {
-        await Http.PostJsonAsync("testpage", _newItem);
+    async void OnAdd(FoodDto food) {
+        await Http.PostJsonAsync("testpage", food);
     }
 
     async void OnSave(FoodDto food) {
