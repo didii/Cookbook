@@ -5,10 +5,10 @@ using Cookbook.Dtos;
 
 namespace Cookbook.Business {
     public interface IFoodService {
-        Task<IEnumerable<FoodDto>> GetAll();
-        Task<FoodDto> Get(int id);
-        Task Create(FoodCreate food);
-        Task Update(FoodUpdate food);
-        Task Delete(int id);
+        Task<IEnumerable<FoodDto>> GetAllAsync();
+        Task<FoodDto> GetAsync(int id);
+        Task CreateAsync(FoodCreate food);
+        Task UpdateAsync(int id, FoodUpdate food);
+        Task DeleteAsync(int id);
     }
 }

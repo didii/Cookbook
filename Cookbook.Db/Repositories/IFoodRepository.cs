@@ -5,10 +5,10 @@ using Cookbook.Domain;
 
 namespace Cookbook.Db.Repositories {
     public interface IFoodRepository {
-        Task<IEnumerable<Food>> GetAll();
-        Task<Food> Get(int id);
-        Task Add(Food food);
-        Task Update(Food food);
-        Task Delete(int id);
+        Task<IEnumerable<Food>> GetAllAsync();
+        Task<Food> GetAsync(int id);
+        Task AddAsync(Food food);
+        Task UpdateAsync(Food food);
+        Task DeleteAsync(int id);
     }
 }

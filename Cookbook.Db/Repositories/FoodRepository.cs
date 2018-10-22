@@ -15,27 +15,27 @@ namespace Cookbook.Db.Repositories {
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Food>> GetAll() {
+        public async Task<IEnumerable<Food>> GetAllAsync() {
             return await _dbContext.Set<Food>().ToArrayAsync();
         }
 
         /// <inheritdoc />
-        public async Task<Food> Get(int id) {
+        public async Task<Food> GetAsync(int id) {
             return await _dbContext.Set<Food>().FindAsync(id);
         }
 
         /// <inheritdoc />
-        public async Task Add(Food food) {
+        public async Task AddAsync(Food food) {
             await _dbContext.Set<Food>().AddAsync(food);
         }
 
         /// <inheritdoc />
-        public async Task Update(Food food) {
+        public async Task UpdateAsync(Food food) {
             _dbContext.Set<Food>().Update(food);
         }
 
         /// <inheritdoc />
-        public async Task Delete(int id) {
+        public async Task DeleteAsync(int id) {
             await _dbContext.Set<Food>().FindAsync(id);
         }
     }
