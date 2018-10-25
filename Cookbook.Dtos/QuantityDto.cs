@@ -7,7 +7,7 @@ namespace Cookbook.Dtos {
         public double Multiplier { get; set; }
     }
 
-    public class QuantityDto : QuantityCommon, IDtoBase, IIdProperty, ITracable, ITrackableDto {
+    public class QuantityDto : QuantityCommon, IDtoBase, IIdProperty, ITracableDto, ITrackableDto {
         public long Id { get; set; }
 
         public long QuantityTypeId { get; set; }

@@ -5,7 +5,7 @@ namespace Cookbook.Dtos {
         public string Name { get; set; }
     }
 
-    public class TagDto : TagCommon, IDtoBase, IIdProperty, ITracable, ITrackableDto {
+    public class TagDto : TagCommon, IDtoBase, IIdProperty, ITracableDto, ITrackableDto {
         public long Id { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }

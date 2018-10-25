@@ -14,7 +14,7 @@ namespace Cookbook.Dtos {
         public double? QuantityValue { get; set; }
     }
 
-    public class IngredientDto : IngredientCommon, IDtoBase, IIdProperty, ITracable, ITrackableDto, ICommentableDto {
+    public class IngredientDto : IngredientCommon, IDtoBase, IIdProperty, ITracableDto, ITrackableDto, ICommentableDto {
         /// <inheritdoc />
         public long Id { get; set; }
 

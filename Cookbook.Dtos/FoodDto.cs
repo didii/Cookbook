@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace Cookbook.Dtos {
-    public class FoodDto : IDtoBase, IIdProperty, ITracable, ITrackableDto {
+    public class FoodDto : IDtoBase, IIdProperty, ITracableDto, ITrackableDto {
         /// <inheritdoc />
         public long Id { get; set; }
 
