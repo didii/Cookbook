@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Mime;
 using Cookbook.Business;
@@ -5,6 +6,7 @@ using Cookbook.Web.Server.Filters;
 using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,15 +40,31 @@ namespace Cookbook.Web.Server {
             });
 
             services.AddBusinessServices(_config);
+
+            services.AddAuthentication().AddIdentityCookies();
+            
+            //Auth options
+            services.Configure<IdentityOptions>(o => {
+                o.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                o.User.RequireUniqueEmail = true;
+            });
+            services.ConfigureApplicationCookie(o => {
+                o.LoginPath = "login";
+                o.AccessDeniedPath = "accessdenied";
+                o.SlidingExpiration = true;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             app.UseResponseCompression();
 
-            //if (env.IsDevelopment()) {
-            //    app.UseDeveloperExceptionPage();
-            //}
+            if (env.IsDevelopment()) {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseAuthentication();
 
             app.UseMvc(routes => { routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}"); });
 
