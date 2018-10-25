@@ -18,7 +18,10 @@ namespace Cookbook.Web.Server.Filters {
         public override void OnException(ExceptionContext context) {
             context.Result = new JsonResult(context.Exception, new JsonSerializerSettings() {
                 NullValueHandling = NullValueHandling.Ignore
-            });
+            }) {
+                StatusCode = 500
+            };
+            context.ExceptionHandled = true;
         }
     }
 }
