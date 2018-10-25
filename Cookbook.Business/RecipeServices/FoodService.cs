@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Cookbook.Db.Repositories;
 using Cookbook.Domain;
 using Cookbook.Dtos;
 
-namespace Cookbook.Business {
+namespace Cookbook.Business.RecipeServices {
     internal class FoodService : IFoodService {
         private readonly IFoodRepository _repo;
         private readonly IMapper _mapper;
@@ -24,28 +23,36 @@ namespace Cookbook.Business {
         }
 
         /// <inheritdoc />
-        public async Task<FoodDto> GetAsync(int id) {
+        public async Task CreateAsync(FoodCreate food) {
+            var entity = _mapper.Map<Food>(food);
+            await _repo.AddAsync(entity);
+            await _repo.SaveAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task<FoodDto> GetAsync(long id) {
             var entity = await _repo.GetAsync(id);
             var dto = _mapper.Map<FoodDto>(entity);
             return dto;
         }
 
         /// <inheritdoc />
-        public async Task CreateAsync(FoodCreate food) {
-            var entity = _mapper.Map<Food>(food);
-            await _repo.AddAsync(entity);
-        }
-
-        /// <inheritdoc />
-        public async Task UpdateAsync(int id, FoodUpdate food) {
+        public async Task UpdateAsync(long id, FoodUpdate food) {
             var entity = _mapper.Map<Food>(food);
             entity.Id = id;
             await _repo.UpdateAsync(entity);
+            await _repo.SaveAsync();
         }
 
         /// <inheritdoc />
-        public async Task DeleteAsync(int id) {
+        public async Task DeleteAsync(long id) {
             await _repo.DeleteAsync(id);
+            await _repo.SaveAsync();
+        }
+
+        /// <inheritdoc />
+        public void Dispose() {
+            _repo?.Dispose();
         }
     }
 }

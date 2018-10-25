@@ -20,7 +20,7 @@ namespace Cookbook.Db.Repositories {
         }
 
         /// <inheritdoc />
-        public async Task<Food> GetAsync(int id) {
+        public async Task<Food> GetAsync(long id) {
             return await _dbContext.Set<Food>().FindAsync(id);
         }
 
@@ -31,12 +31,24 @@ namespace Cookbook.Db.Repositories {
 
         /// <inheritdoc />
         public async Task UpdateAsync(Food food) {
+            await _dbContext.Set<Food>().FindAsync(food.Id);
             _dbContext.Set<Food>().Update(food);
         }
 
         /// <inheritdoc />
-        public async Task DeleteAsync(int id) {
-            await _dbContext.Set<Food>().FindAsync(id);
+        public async Task DeleteAsync(long id) {
+            var food = await _dbContext.Set<Food>().FindAsync(id);
+            _dbContext.Set<Food>().Remove(food);
+        }
+
+        /// <inheritdoc />
+        public async Task SaveAsync() {
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public void Dispose() {
+            _dbContext?.Dispose();
         }
     }
 }
