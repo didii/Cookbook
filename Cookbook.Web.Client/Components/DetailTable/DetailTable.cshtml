@@ -8,6 +8,10 @@
         <tr>
             <th scope="col">#</th>
             @HeaderTemplate
+            @if (IsTracable || IsTrackable) {
+                <th scope="col">Created</th>
+                <th scope="col">Updated</th>
+            }
             <th scope="col">Actions</th>
         </tr>
     </thead>
@@ -16,9 +20,37 @@
             <tr>
                 <th scope="row" class="align-middle">@(((IIdProperty)item).Id)</th>
                 @RowTemplate(item)
+                @if (IsTracable || IsTrackable) {
+                    <td class="small">
+                        @if (IsTrackable) {
+                            @((item as ITrackableDto)?.CreatedBy?.UserName ?? "<unknown>")
+                        }
+                        @if (IsTrackable && IsTracable) {
+                            <br/>
+                        }
+                        @if (IsTracable) {
+                            @((item as ITracableDto)?.CreatedOn)
+                        }
+                    </td>
+                    <td class="small">
+                        @if (IsTrackable) {
+                            @((item as ITrackableDto)?.UpdatedBy?.UserName ?? "<unknown>")
+                        }
+                        @if (IsTrackable && IsTracable) {
+                            <br/>
+                        }
+                        @if (IsTracable) {
+                            @((item as ITracableDto)?.UpdatedOn)
+                        }
+                    </td>
+                }
                 <td>
-                    <button onclick="@(_ => OnSave?.Invoke(item))" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                    <button onclick="@(_ => OnDelete?.Invoke(item))" class="btn btn-danger"><i class="fa fa-times"></i></button>
+                    <button onclick="@(_ => OnSave?.Invoke(item))" class="btn btn-primary">
+                        <i class="fa fa-save"></i>
+                    </button>
+                    <button onclick="@(_ => OnDelete?.Invoke(item))" class="btn btn-danger">
+                        <i class="fa fa-times"></i>
+                    </button>
                 </td>
             </tr>
         }
@@ -27,14 +59,18 @@
         <tr>
             <td></td>
             @RowTemplate(NewItem)
+            @if (IsTrackable && IsTracable) {
+                <td></td>
+                <td></td>
+            }
             <td>
-                <button onclick="@(_ => OnAdd?.Invoke(NewItem))" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                <button onclick="@(_ => OnAdd?.Invoke(NewItem))" class="btn btn-success">
+                    <i class="fa fa-plus"></i>
+                </button>
             </td>
         </tr>
     </tfoot>
 </table>
-
-
 
 @functions {
 
@@ -60,4 +96,9 @@
     private Action<TItem> OnAdd { get; set; }
 
     private TItem NewItem { get; set; } = (TItem)Activator.CreateInstance(typeof(TItem));
+
+    private bool IsTracable => typeof(ITracableDto).IsAssignableFrom(typeof(TItem));
+
+    private bool IsTrackable => typeof(ITrackableDto).IsAssignableFrom(typeof(TItem));
+
 }
