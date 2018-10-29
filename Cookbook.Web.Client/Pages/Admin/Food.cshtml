@@ -1,12 +1,12 @@
 ﻿@page "/admin/food"
 @inject HttpClient Http
 
-<h1>Test page</h1>
+<h1>Food</h1>
 
-@if (pets == null) {
+@if (food == null) {
     @:Loading food...
 } else {
-    <DetailTable Items="@pets" OnSave="OnSave" OnDelete="OnDelete" OnAdd="OnAdd">
+    <DetailTable Items="@food" OnSave="OnSave" OnDelete="OnDelete" OnAdd="OnAdd">
         <HeaderTemplate>
             <th scope="col">Name</th>
             <th scope="col">Plural name</th>
@@ -22,15 +22,15 @@
 
 @functions {
 
-    List<FoodDto> pets = null;
+    List<FoodDto> food = null;
 
     protected override async Task OnInitAsync() {
-        pets = await Http.GetJsonAsync<List<FoodDto>>("api/food");
+        food = await Http.GetJsonAsync<List<FoodDto>>("api/food");
     }
 
     async void OnAdd(FoodDto food) {
         await Http.PostJsonAsync("api/food", food);
-        pets.Add(food);
+        this.food.Add(food);
         StateHasChanged();
     }
 
@@ -40,7 +40,7 @@
 
     async void OnDelete(FoodDto food) {
         await Http.DeleteAsync("api/food/" + food.Id);
-        pets.Remove(food);
+        this.food.Remove(food);
         StateHasChanged();
     }
 
