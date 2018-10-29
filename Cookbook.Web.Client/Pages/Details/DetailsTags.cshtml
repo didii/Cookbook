@@ -1,0 +1,42 @@
+﻿@inject IDetailsService _detailsService
+
+<div>
+    @foreach (var tag in Tags) {
+        <div style="display: inline-block">
+            <DetailsTag Tag="tag"
+                        TagSet="@OnTagSet(tag)"
+                        TagRemoved="@OnTagRemoved">
+            </DetailsTag>
+        </div>
+    }
+    @if (_detailsService.IsEditMode) {
+        <div style="display: inline-block">
+            <DetailsTag TagSet="@OnTagAdded"></DetailsTag>
+        </div>
+    }
+</div>
+
+@functions {
+
+    [Parameter]
+    private ICollection<TagDto> Tags { get; set; }
+
+    private Action<string> OnTagSet(TagDto tag) {
+        return name => {
+            Console.WriteLine("Tag updated");
+            tag.Name = name;
+        };
+    }
+
+    private void OnTagRemoved(TagDto tag) {
+        Tags.Remove(tag);
+        Console.WriteLine("Tag removed");
+        StateHasChanged();
+    }
+
+    private void OnTagAdded(string name) {
+        Tags.Add(new TagDto(){Name = name});
+        StateHasChanged();
+    }
+
+}
