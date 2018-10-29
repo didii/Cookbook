@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Cookbook.Dtos\Cookbook.Dtos.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\js\jsLib.js" />
+  </ItemGroup>
+
 </Project>
