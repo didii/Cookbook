@@ -1,0 +1,62 @@
+﻿@page "/details/{idString}"
+@inject IDetailsService _detailsService
+@inject HttpClient _http
+
+<div class="btn-group" style="position: absolute; right: 10px;">
+    @if (!_detailsService.IsEditMode) {
+        <button onclick="@OnEditClick" title="Edit recipe" class="btn btn-link">
+            <span class="fa fa-edit xxl"></span>
+        </button>
+    }
+    else {
+        <button onclick="@OnSave" title="Save changes" class="btn btn-success">
+            <span class="fa fa-save xl"></span>
+        </button>
+        <button onclick="@OnRemove" title="Delete recipe" class="btn btn-danger">
+            <span class="fa fa-ban xl"></span>
+        </button>
+        <button onclick="@OnDiscard" title="Discard changes" class="btn btn-secondary">
+            <span class="fa fa-times xl"></span>
+        </button>
+    }
+</div>
+
+<DetailsTags Tags="Recipe.Tags"></DetailsTags>
+
+<h1>The recipe name comes here</h1>
+
+@functions {
+
+    private RecipeDto Recipe { get; } = new RecipeDto() {
+        Tags = new List<TagDto>() {
+            new TagDto() { Id = 1, Name = "tag1" },
+            new TagDto() { Id = 2, Name = "tag2" },
+            new TagDto() { Id = 3, Name = "longerTagName" },
+        }
+    };
+
+    [Parameter]
+    private string IdString { get; set; }
+
+    private long Id => long.Parse(IdString);
+
+    private void OnEditClick() {
+        _detailsService.IsEditMode = true;
+    }
+
+    private void OnSave() {
+        Console.WriteLine("Saving");
+        _detailsService.IsEditMode = false;
+    }
+
+    private void OnRemove() {
+        Console.WriteLine("Removing");
+    }
+
+    private void OnDiscard() {
+        Console.WriteLine("Discarding");
+        _detailsService.Discard();
+        _detailsService.IsEditMode = false;
+    }
+
+}
