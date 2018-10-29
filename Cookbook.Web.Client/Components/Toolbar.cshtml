@@ -1,0 +1,38 @@
+﻿<div ref="container" class="btn-group popup-toolbar">
+    <button onclick="@Saved" type="button" title="Save changes" class="btn btn-success popup-small">
+        <span class="fa fa-save"></span>
+    </button>
+    @if (CanRemove) {
+        <button onclick="@Removed" type="button" title="Remove tag" class="btn btn-danger popup-small">
+            <span class="fa fa-ban"></span>
+        </button>
+    }
+    <button onclick="@Cancelled" type="button" title="Discard" class="btn btn-secondary popup-small">
+        <span class="fa fa-times"></span>
+    </button>
+</div>
+
+@functions {
+
+    public void Show() {
+        container.Show();
+    }
+
+    public void Hide() {
+        container.Hide();
+    }
+
+    [Parameter]
+    private bool CanRemove { get; set; }
+
+    [Parameter]
+    private Action Saved { get; set; }
+
+    [Parameter]
+    private Action Removed { get; set; }
+
+    [Parameter]
+    private Action Cancelled { get; set; }
+
+    private ElementRef container;
+}
