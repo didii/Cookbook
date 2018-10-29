@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cookbook.Web.Server.Controllers {
     [Route("account")]
+    [ApiController]
     public class AccountController : Controller {
         private readonly IAccountService _accountService;
 

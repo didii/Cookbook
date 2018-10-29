@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cookbook.Web.Server.Controllers {
     [Route("api/food")]
+    [ApiController]
     public class FoodController : Controller {
         private readonly IFoodService _foodService;
 
