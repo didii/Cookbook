@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cookbook.Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -81,7 +82,7 @@ namespace Cookbook.Db.Contexts {
             return builder.ToString();
         }
 
-        private static void AddOrUpdateEntity<T>(IDbContext context, T entity) where T : class, IDbItem {
+        private static void AddOrUpdateEntity<T>(DbContext context, T entity) where T : class, IDbItem {
             var set = context.Set<T>();
             var existing = set.FirstOrDefault(e => e.Id == entity.Id);
             if (existing == null)

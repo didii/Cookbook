@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cookbook.Db.Contexts {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>, IDbContext {
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser> {
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

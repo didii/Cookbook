@@ -11,9 +11,9 @@ namespace Cookbook.Db {
     public static class StartupExtensions {
         public static void AddDbServices(this IServiceCollection services, IConfiguration configuration) {
             services.AddScoped<ISeeder, CookbookSeeder>();
-            services.AddDbContext<IDbContext, ApplicationDbContext>(options => { options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")); });
+            services.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")); });
 
-            services.AddIdentityCore<User>().AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentityCore<IdentityUser>().AddDefaultTokenProviders().AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddRule(typeof(StartupExtensions).Assembly, "Repository");
         }

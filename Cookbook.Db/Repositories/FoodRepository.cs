@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cookbook.Db.Contexts;
 using Cookbook.Domain;
+using Cookbook.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cookbook.Db.Repositories {
     internal class FoodRepository : IFoodRepository {
-        private readonly IDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
-        public FoodRepository(IDbContext dbContext) {
+        public FoodRepository(ApplicationDbContext dbContext) {
             _dbContext = dbContext;
         }
 
@@ -21,7 +22,9 @@ namespace Cookbook.Db.Repositories {
 
         /// <inheritdoc />
         public async Task<Food> GetAsync(long id) {
-            return await _dbContext.Set<Food>().FindAsync(id);
+            var result = await _dbContext.Set<Food>().FindAsync(id);
+            if (result == null) throw new NotFoundException(typeof(Food), id);
+            return result;
         }
 
         /// <inheritdoc />
@@ -31,13 +34,15 @@ namespace Cookbook.Db.Repositories {
 
         /// <inheritdoc />
         public async Task UpdateAsync(Food food) {
-            await _dbContext.Set<Food>().FindAsync(food.Id);
+            var found = await _dbContext.Set<Food>().FindAsync(food.Id);
+            if (found == null) throw new NotFoundException(typeof(Food), food.Id);
             _dbContext.Set<Food>().Update(food);
         }
 
         /// <inheritdoc />
         public async Task DeleteAsync(long id) {
             var food = await _dbContext.Set<Food>().FindAsync(id);
+            if (food == null) throw new NotFoundException(typeof(Food), id);
             _dbContext.Set<Food>().Remove(food);
         }
 

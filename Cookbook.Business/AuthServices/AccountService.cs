@@ -5,22 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Cookbook.Domain;
 using Cookbook.Dtos;
+using Cookbook.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Cookbook.Business.AuthServices {
     internal class AccountService : IAccountService {
-        private readonly UserManager<User> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AccountService(UserManager<User> userManager, IEmailSender emailSender) {
+        public AccountService(UserManager<IdentityUser> userManager) {
             _userManager = userManager;
-            _emailSender = emailSender;
         }
 
         /// <inheritdoc />
         public async Task<UserDto> GetAsync(string userName) {
             var entity = await _userManager.FindByNameAsync(userName);
+            if (entity == null) {
+                throw new NotFoundException(typeof(IdentityUser), userName);
+            }
             return new UserDto() {
                 UserName = entity.UserName,
                 Email = entity.Email
@@ -29,10 +30,10 @@ namespace Cookbook.Business.AuthServices {
 
         /// <inheritdoc />
         public async Task CreateAsync(UserCreate user) {
-            var entity = new User() {UserName = user.UserName, Email = user.Email};
+            var entity = new IdentityUser() {UserName = user.UserName, Email = user.Email};
             var result = await _userManager.CreateAsync(entity, user.Password);
             if (!result.Succeeded)
-                throw new Exception("Could not create user " + user.UserName);
+                throw new AccountCreateException(user.UserName, result.Errors);
         }
     }
 }
