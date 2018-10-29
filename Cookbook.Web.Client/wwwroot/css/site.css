@@ -101,3 +101,29 @@ app {
 .nav .nav-item .fa {
     margin-right: 5px;
 }
+
+.input-badge {
+    border: none;
+    font-size: 75%;
+    font-weight: bold;
+    padding: .05em .4em;
+    border-radius: .25rem;
+}
+
+.popup-toolbar {
+    position: absolute;
+    transform: translate(0, -20px);
+}
+
+button.popup-small {
+    font-size: 75%;
+    padding: 1px 4px;
+}
+
+.xxl {
+    font-size: 200%;
+}
+
+.xl {
+    font-size: 150%;
+}
