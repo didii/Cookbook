@@ -1,0 +1,110 @@
+﻿@implements IDisposable
+@inject IDetailsService _detailsService
+
+<Toolbar ref="toolbar" CanRemove="@(Tag != null)" Saved="@Save" Removed="@OnRemove" Cancelled="@Cancel"></Toolbar>
+<span ref="span" onclick="@SetEditMode" class="badge badge-info">
+    @if (Tag != null) {
+        @:@Tag.Name
+    }
+    else {
+        @:+
+    }
+</span>
+<input ref="input" bind="@InputName" onkeydown="@OnKeyDown" onkeyup="@OnKeyUp" maxlength="25" hidden class="input-badge badge-info"/>
+
+@functions {
+
+    // Parameters
+    [Parameter]
+    private TagDto Tag { get; set; }
+
+    [Parameter]
+    private Action<string> TagSet { get; set; }
+
+    [Parameter]
+    private Action<TagDto> TagRemoved { get; set; }
+
+    [Parameter]
+    private Action Next { get; set; }
+
+    // Lifecycle methods
+    private bool FirstCall { get; set; } = true;
+
+    protected override void OnInit() {
+        _detailsService.IsEditModeChanged += OnIsEditModeChanged;
+        _detailsService.ComponentInEditModeChanged += OnComponentInEditModeChanged;
+    }
+
+    protected override void OnAfterRender() {
+        if (FirstCall) {
+            FirstCall = false;
+            toolbar.Hide();
+        }
+    }
+
+    // Public methods
+    public void SetEditMode() {
+        if (_detailsService.IsEditMode) {
+            _detailsService.ComponentInEditMode = this;
+            InputName = Tag?.Name ?? "";
+            span.Hide();
+            toolbar.Show();
+            input.Show();
+            input.Focus();
+        }
+    }
+
+    public void Save() {
+        TagSet?.Invoke(InputName);
+        Cancel();
+    }
+
+    public void Cancel() {
+        toolbar.Hide();
+        input.Hide();
+        span.Show();
+    }
+
+    public void Dispose() {
+        _detailsService.IsEditModeChanged -= OnIsEditModeChanged;
+        _detailsService.ComponentInEditModeChanged -= OnComponentInEditModeChanged;
+    }
+
+    // Privates
+    private string InputName { get; set; }
+
+    private Toolbar toolbar;
+    private ElementRef span;
+    private ElementRef input;
+
+    private void OnIsEditModeChanged(bool edit) {
+        if (!edit) {
+            Cancel();
+        }
+    }
+
+    private void OnComponentInEditModeChanged(BlazorComponent component) {
+        if (component != this)
+            Cancel();
+    }
+
+    private void OnRemove() {
+        TagRemoved?.Invoke(Tag);
+        Cancel();
+    }
+
+    private void OnKeyDown(UIKeyboardEventArgs args) {
+        if (args.Code == "Tab") {
+            Next?.Invoke();
+        }
+    }
+
+    private void OnKeyUp(UIKeyboardEventArgs args) {
+        if (args.Code == "Enter") {
+            Save();
+        } else if (args.Code == "Escape") {
+            Cancel();
+        }
+    }
+
+}
