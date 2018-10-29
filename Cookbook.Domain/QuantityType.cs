@@ -7,8 +7,6 @@ namespace Cookbook.Domain {
 
         public string Name { get; set; }
 
-        //public virtual Quantity BaseQuantity { get; set; }
-
         /// <inheritdoc />
         public DateTime CreatedOn { get; set; }
 

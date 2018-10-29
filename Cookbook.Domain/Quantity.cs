@@ -14,6 +14,8 @@ namespace Cookbook.Domain {
 
         public virtual QuantityType QuantityType { get; set; }
 
+        public bool IsBaseQuantity { get; set; }
+
         /// <inheritdoc />
         public DateTime CreatedOn { get; set; }
 
