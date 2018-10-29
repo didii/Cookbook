@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Net.Mime;
 using Cookbook.Business;
-using Cookbook.Web.Server.Filters;
+using Cookbook.Web.Server.Middleware;
 using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +28,7 @@ namespace Cookbook.Web.Server {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
-            services.AddMvc(x => x.Filters.Add<ExceptionFilter>());
+            services.AddMvc();
 
             services.AddSwaggerGen(x => { x.SwaggerDoc("v1", new Info() { Title = "Cookbook", Description = "The cookbook recipe API" }); });
 
@@ -45,6 +45,12 @@ namespace Cookbook.Web.Server {
             
             //Auth options
             services.Configure<IdentityOptions>(o => {
+                o.Password.RequireDigit = false;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequiredLength = 5;
+
                 o.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                 o.User.RequireUniqueEmail = true;
             });
@@ -63,6 +69,8 @@ namespace Cookbook.Web.Server {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.UseAuthentication();
 
