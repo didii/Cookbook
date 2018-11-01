@@ -21,13 +21,23 @@
     }
 </div>
 
-<DetailsTags Tags="Recipe.Tags"></DetailsTags>
+@if (Recipe == null) {
+    <p>Loading recipe...</p>
+}
+else {
+    <DetailsTags Tags="Recipe.Tags"></DetailsTags>
 
-<h1>The recipe name comes here</h1>
+    <DetailsHeading Recipe="Recipe"></DetailsHeading>
+}
+
 
 @functions {
 
-    private RecipeDto Recipe { get; } = new RecipeDto() {
+    protected override async Task OnInitAsync() {
+        Recipe = await _http.GetJsonAsync<RecipeDto>($"api/recipes/{Id}");
+    }
+
+    private RecipeDto Recipe { get; set; } = new RecipeDto() {
         Tags = new List<TagDto>() {
             new TagDto() { Id = 1, Name = "tag1" },
             new TagDto() { Id = 2, Name = "tag2" },
