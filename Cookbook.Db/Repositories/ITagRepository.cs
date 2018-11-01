@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 using Cookbook.Domain;
 
 namespace Cookbook.Db.Repositories {
-    public interface IFoodRepository : IDisposable {
-        Task<IEnumerable<Food>> GetAllAsync();
-        Task<Food> GetAsync(long id);
-        Task<long> CreateAsync(Food food);
-        void Update(Food food);
+    public interface ITagRepository : IDisposable {
+        Task<long> CreateAsync(Tag entity);
+        Task<Tag> GetAsync(long id);
+        void Update(Tag entity);
         Task DeleteAsync(long id);
         Task SaveAsync();
     }
