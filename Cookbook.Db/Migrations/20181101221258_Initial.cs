@@ -29,7 +29,8 @@ namespace Cookbook.Db.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -304,6 +305,7 @@ namespace Cookbook.Db.Migrations
                     ShortName = table.Column<string>(nullable: true),
                     Multiplier = table.Column<double>(nullable: false),
                     QuantityTypeId = table.Column<long>(nullable: true),
+                    IsBaseQuantity = table.Column<bool>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: false),
                     CreatedById = table.Column<string>(nullable: true),
@@ -372,8 +374,7 @@ namespace Cookbook.Db.Migrations
                 name: "AppliedTag",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<long>(nullable: false),
                     RecipeId = table.Column<long>(nullable: false),
                     TagId = table.Column<long>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
@@ -383,7 +384,7 @@ namespace Cookbook.Db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppliedTag", x => x.Id);
+                    table.PrimaryKey("PK_AppliedTag", x => new { x.RecipeId, x.TagId });
                     table.ForeignKey(
                         name: "FK_AppliedTag_AspNetUsers_CreatedById",
                         column: x => x.CreatedById,
@@ -658,11 +659,6 @@ namespace Cookbook.Db.Migrations
                 name: "IX_AppliedTag_CreatedById",
                 table: "AppliedTag",
                 column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AppliedTag_RecipeId",
-                table: "AppliedTag",
-                column: "RecipeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppliedTag_TagId",

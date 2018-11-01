@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Cookbook.Domain {
     public class Tag : IDbItem, ITracable, ITrackable {
@@ -6,6 +7,8 @@ namespace Cookbook.Domain {
         public long Id { get; set; }
 
         public string Name { get; set; }
+
+        public ICollection<AppliedTag> AppliedTags { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

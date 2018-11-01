@@ -1,10 +1,7 @@
 ﻿using System;
 
 namespace Cookbook.Domain {
-    public class AppliedTag : IDbItem, ITracable, ITrackable {
-        /// <inheritdoc />
-        public long Id { get; set; }
-
+    public class AppliedTag : ITracable, ITrackable {
         public long RecipeId { get; set; }
 
         public virtual Recipe Recipe { get; set; }

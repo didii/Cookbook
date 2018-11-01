@@ -51,6 +51,9 @@ namespace Cookbook.Db.Contexts {
             builder.Entity<FoodImage>().HasIndex(fi => new { fi.FoodId, fi.ImageId }).IsUnique();
             builder.Entity<InstructionImage>().HasIndex(ii => new { ii.InstructionId, ii.ImageId }).IsUnique();
             builder.Entity<RecipeImage>().HasIndex(ri => new { ri.RecipeId, ri.ImageId }).IsUnique();
+            builder.Entity<AppliedTag>().HasKey(t => new { t.RecipeId, t.TagId });
+            builder.Entity<AppliedTag>().HasOne(at => at.Recipe).WithMany(r => r.AppliedTags).HasForeignKey(at => at.RecipeId);
+            builder.Entity<AppliedTag>().HasOne(at => at.Tag).WithMany(r => r.AppliedTags).HasForeignKey(at => at.TagId);
         }
 
         private void Seed(ModelBuilder builder) {

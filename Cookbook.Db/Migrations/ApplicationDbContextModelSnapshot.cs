@@ -21,27 +21,21 @@ namespace Cookbook.Db.Migrations
 
             modelBuilder.Entity("Cookbook.Domain.AppliedTag", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<long>("RecipeId");
+
+                    b.Property<long>("TagId");
 
                     b.Property<string>("CreatedById");
 
                     b.Property<DateTime>("CreatedOn");
 
-                    b.Property<long>("RecipeId");
-
-                    b.Property<long>("TagId");
-
                     b.Property<string>("UpdatedById");
 
                     b.Property<DateTime>("UpdatedOn");
 
-                    b.HasKey("Id");
+                    b.HasKey("RecipeId", "TagId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("RecipeId");
 
                     b.HasIndex("TagId");
 
@@ -608,12 +602,12 @@ namespace Cookbook.Db.Migrations
                         .HasForeignKey("CreatedById");
 
                     b.HasOne("Cookbook.Domain.Recipe", "Recipe")
-                        .WithMany("Tags")
+                        .WithMany("AppliedTags")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Cookbook.Domain.Tag", "Tag")
-                        .WithMany()
+                        .WithMany("AppliedTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
 

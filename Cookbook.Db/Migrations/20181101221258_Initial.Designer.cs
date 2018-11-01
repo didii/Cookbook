@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cookbook.Db.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181022155553_Initial")]
+    [Migration("20181101221258_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,27 +23,23 @@ namespace Cookbook.Db.Migrations
 
             modelBuilder.Entity("Cookbook.Domain.AppliedTag", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<long>("RecipeId");
+
+                    b.Property<long>("TagId");
 
                     b.Property<string>("CreatedById");
 
                     b.Property<DateTime>("CreatedOn");
 
-                    b.Property<long>("RecipeId");
-
-                    b.Property<long>("TagId");
+                    b.Property<long>("Id");
 
                     b.Property<string>("UpdatedById");
 
                     b.Property<DateTime>("UpdatedOn");
 
-                    b.HasKey("Id");
+                    b.HasKey("RecipeId", "TagId");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("RecipeId");
 
                     b.HasIndex("TagId");
 
@@ -291,6 +287,8 @@ namespace Cookbook.Db.Migrations
 
                     b.Property<DateTime>("CreatedOn");
 
+                    b.Property<bool>("IsBaseQuantity");
+
                     b.Property<double>("Multiplier");
 
                     b.Property<string>("Name");
@@ -425,57 +423,6 @@ namespace Cookbook.Db.Migrations
                     b.ToTable("Tag");
                 });
 
-            modelBuilder.Entity("Cookbook.Domain.User", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AccessFailedCount");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("LockoutEnabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("SecurityStamp");
-
-                    b.Property<bool>("TwoFactorEnabled");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -518,6 +465,62 @@ namespace Cookbook.Db.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims","Identity");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed");
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -586,6 +589,16 @@ namespace Cookbook.Db.Migrations
                     b.ToTable("AspNetUserTokens","Identity");
                 });
 
+            modelBuilder.Entity("Cookbook.Domain.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+
+                    b.ToTable("User");
+
+                    b.HasDiscriminator().HasValue("User");
+                });
+
             modelBuilder.Entity("Cookbook.Domain.AppliedTag", b =>
                 {
                     b.HasOne("Cookbook.Domain.User", "CreatedBy")
@@ -593,12 +606,12 @@ namespace Cookbook.Db.Migrations
                         .HasForeignKey("CreatedById");
 
                     b.HasOne("Cookbook.Domain.Recipe", "Recipe")
-                        .WithMany("Tags")
+                        .WithMany("AppliedTags")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Cookbook.Domain.Tag", "Tag")
-                        .WithMany()
+                        .WithMany("AppliedTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -809,7 +822,7 @@ namespace Cookbook.Db.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Cookbook.Domain.User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -817,7 +830,7 @@ namespace Cookbook.Db.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Cookbook.Domain.User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -830,7 +843,7 @@ namespace Cookbook.Db.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Cookbook.Domain.User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -838,7 +851,7 @@ namespace Cookbook.Db.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Cookbook.Domain.User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

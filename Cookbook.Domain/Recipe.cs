@@ -24,7 +24,7 @@ namespace Cookbook.Domain {
 
         public virtual ICollection<Comment> Comments { get; set; }
 
-        public virtual ICollection<AppliedTag> Tags { get; set; }
+        public virtual ICollection<AppliedTag> AppliedTags { get; set; }
 
         public virtual ICollection<RecipeImage> RecipeImages { get; set; }
 
