@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "07 Libraries", "07 Librarie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentValidator", "..\FluentValidator\FluentValidator\FluentValidator.csproj", "{93737FF7-A252-4B30-BA5E-6342708AE066}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Cookbook.Sql", "Cookbook.Sql\Cookbook.Sql.sqlproj", "{5810F28F-B187-4B91-9CDD-871EB1CEDDF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,12 @@ Global
 		{93737FF7-A252-4B30-BA5E-6342708AE066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93737FF7-A252-4B30-BA5E-6342708AE066}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93737FF7-A252-4B30-BA5E-6342708AE066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5810F28F-B187-4B91-9CDD-871EB1CEDDF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5810F28F-B187-4B91-9CDD-871EB1CEDDF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5810F28F-B187-4B91-9CDD-871EB1CEDDF8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5810F28F-B187-4B91-9CDD-871EB1CEDDF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5810F28F-B187-4B91-9CDD-871EB1CEDDF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5810F28F-B187-4B91-9CDD-871EB1CEDDF8}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +122,7 @@ Global
 		{DFFB002A-3A13-4C21-9B75-4AB2CFE7FD99} = {E4DA6B1D-0918-48F3-848A-4AF5313F5790}
 		{B405DDB6-E65D-4283-B3D8-676181D628A7} = {E4DA6B1D-0918-48F3-848A-4AF5313F5790}
 		{93737FF7-A252-4B30-BA5E-6342708AE066} = {780368F5-398F-442F-947D-898E1D3C7501}
+		{5810F28F-B187-4B91-9CDD-871EB1CEDDF8} = {8BD30C03-866C-4EA6-83CA-F998A682AECE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {951784C3-F08A-40BA-9278-FEA26B649E79}
