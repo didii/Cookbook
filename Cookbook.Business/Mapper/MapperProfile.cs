@@ -14,10 +14,10 @@ namespace Cookbook.Business.Mapper {
             CreateMap<FoodUpdate, Food>();
 
             // Recipe
-            CreateMap<Recipe, RecipeDto>();
+            CreateMap<Recipe, RecipeDto>().ForMember(x => x.Tags, m => m.MapFrom(y => y.AppliedTags));
 
             // Tags
-            CreateMap<AppliedTag, TagDto>().Substitute(x => x.Tag);
+            CreateMap<AppliedTag, TagDto>().ConvertUsing<AppliedTag_TagDto>();
         }
     }
 }
