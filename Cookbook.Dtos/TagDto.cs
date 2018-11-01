@@ -13,7 +13,6 @@ namespace Cookbook.Dtos {
         public UserDto UpdatedBy { get; set; }
     }
 
-    public class TagCreate : TagCommon, IDtoCreateBase { }
+    public class TagEdit : TagCommon, IDtoCreateBase, IDtoUpdateBase {}
 
-    public class TagUpdate : TagCommon, IDtoUpdateBase { }
 }
