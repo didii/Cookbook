@@ -1,0 +1,33 @@
+﻿<div class="row">
+    <div class="col-md-1 align-middle">
+        <span class="fa fa-star fa-5x"></span>
+    </div>
+    <div class="col-md-8">
+        <h1>@Recipe.Name</h1>
+        <hr/>
+        <p class="text-secondary">@Recipe.Description</p>
+    </div>
+    <div class="col-md-3">
+        <div class="row text-center align-middle">
+            <div class="col-md-4">
+                <div><span class="fa fa-clock-o fa-3x"></span></div>
+                <span><ShowDuration Time="@Recipe.Duration"></ShowDuration></span>
+            </div>
+            <div class="col-md-4">
+                <div><span class="fa fa-money fa-3x"></span></div>
+                <span>€ @Recipe.EstimatedPrice</span>
+            </div>
+            <div class="col-md-4">
+                <div><span class="fa fa-signal fa-3x"></span></div>
+                <span>@Recipe.Difficulty</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+
+    [Parameter]
+    private RecipeDto Recipe { get; set; }
+
+}
