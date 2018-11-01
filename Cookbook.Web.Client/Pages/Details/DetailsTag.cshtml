@@ -5,8 +5,7 @@
 <span ref="span" onclick="@SetEditMode" class="badge badge-info">
     @if (Tag != null) {
         @:@Tag.Name
-    }
-    else {
+    } else {
         @:+
     }
 </span>
@@ -31,7 +30,6 @@
     private bool FirstCall { get; set; } = true;
 
     protected override void OnInit() {
-        _detailsService.IsEditModeChanged += OnIsEditModeChanged;
         _detailsService.ComponentInEditModeChanged += OnComponentInEditModeChanged;
     }
 
@@ -44,14 +42,12 @@
 
     // Public methods
     public void SetEditMode() {
-        if (_detailsService.IsEditMode) {
-            _detailsService.ComponentInEditMode = this;
-            InputName = Tag?.Name ?? "";
-            span.Hide();
-            toolbar.Show();
-            input.Show();
-            input.Focus();
-        }
+        _detailsService.ComponentInEditMode = this;
+        InputName = Tag?.Name ?? "";
+        span.Hide();
+        toolbar.Show();
+        input.Show();
+        input.Focus();
     }
 
     public void Save() {
@@ -66,7 +62,6 @@
     }
 
     public void Dispose() {
-        _detailsService.IsEditModeChanged -= OnIsEditModeChanged;
         _detailsService.ComponentInEditModeChanged -= OnComponentInEditModeChanged;
     }
 
@@ -76,12 +71,6 @@
     private Toolbar toolbar;
     private ElementRef span;
     private ElementRef input;
-
-    private void OnIsEditModeChanged(bool edit) {
-        if (!edit) {
-            Cancel();
-        }
-    }
 
     private void OnComponentInEditModeChanged(BlazorComponent component) {
         if (component != this)
@@ -102,7 +91,8 @@
     private void OnKeyUp(UIKeyboardEventArgs args) {
         if (args.Code == "Enter") {
             Save();
-        } else if (args.Code == "Escape") {
+        }
+        else if (args.Code == "Escape") {
             Cancel();
         }
     }
