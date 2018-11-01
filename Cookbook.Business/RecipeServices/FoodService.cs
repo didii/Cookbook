@@ -25,7 +25,7 @@ namespace Cookbook.Business.RecipeServices {
         /// <inheritdoc />
         public async Task CreateAsync(FoodCreate food) {
             var entity = _mapper.Map<Food>(food);
-            await _repo.AddAsync(entity);
+            await _repo.CreateAsync(entity);
             await _repo.SaveAsync();
         }
 
@@ -38,9 +38,9 @@ namespace Cookbook.Business.RecipeServices {
 
         /// <inheritdoc />
         public async Task UpdateAsync(long id, FoodUpdate food) {
-            var entity = _mapper.Map<Food>(food);
-            entity.Id = id;
-            await _repo.UpdateAsync(entity);
+            var entity = await _repo.GetAsync(id);
+            _repo.Update(entity);
+            _mapper.Map(food, entity);
             await _repo.SaveAsync();
         }
 
