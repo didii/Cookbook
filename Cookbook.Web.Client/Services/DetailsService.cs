@@ -18,6 +18,10 @@ namespace Cookbook.Web.Client.Services {
         /// <inheritdoc />
         public event Action Discarding;
 
+
+        /// <inheritdoc />
+        public long RecipeId { get; set; }
+
         /// <inheritdoc />
         public bool IsEditMode {
             get => _isEditMode;

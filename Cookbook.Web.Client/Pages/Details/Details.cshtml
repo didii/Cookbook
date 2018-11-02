@@ -25,16 +25,20 @@
     <p>Loading recipe...</p>
 }
 else {
-    <DetailsTags Tags="Recipe.Tags"></DetailsTags>
-
-    <DetailsHeading Recipe="Recipe"></DetailsHeading>
+    <div class="container-tags">
+        <DetailsTags Tags="Recipe.Tags"></DetailsTags>
+    </div>
+    <div class="container-heading">
+        <DetailsHeading Recipe="Recipe"></DetailsHeading>
+    </div>
 }
 
 
 @functions {
 
     protected override async Task OnInitAsync() {
-        Recipe = await _http.GetJsonAsync<RecipeDto>($"api/recipes/{Id}");
+        _detailsService.RecipeId = long.Parse(IdString);
+        Recipe = await _http.GetJsonAsync<RecipeDto>($"api/recipes/{_detailsService.RecipeId}");
     }
 
     private RecipeDto Recipe { get; set; } = new RecipeDto() {
@@ -47,8 +51,6 @@ else {
 
     [Parameter]
     private string IdString { get; set; }
-
-    private long Id => long.Parse(IdString);
 
     private void OnEditClick() {
         _detailsService.IsEditMode = true;

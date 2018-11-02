@@ -10,6 +10,7 @@ namespace Cookbook.Web.Client.Services {
         event Action<BlazorComponent> ComponentInEditModeChanged;
         event Action Discarding;
 
+        long RecipeId { get; set; }
         bool IsEditMode { get; set; }
         BlazorComponent ComponentInEditMode { get; set; }
         void Discard();

@@ -127,3 +127,13 @@ button.popup-small {
 .xl {
     font-size: 150%;
 }
+
+.container-tags {
+    margin: 10px 0;
+}
+.container-heading {
+    margin: 10px 0;
+}
+.container-heading hr {
+    margin: 8px 0;
+}
