@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Cookbook.Dtos;
 
 namespace Cookbook.Web.Client.Services {
-    public interface ITagService {
-        Task SetTagForRecipe(long recipeId, TagEdit tag);
+    public interface ITagClientService {
+        Task AddTagForRecipe(long recipeId, TagEdit tag);
         Task RemoveTagFromRecipe(long recipeId, long tagId);
     }
 }

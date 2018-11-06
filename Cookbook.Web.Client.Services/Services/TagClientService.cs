@@ -4,19 +4,18 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Cookbook.Dtos;
-using Cookbook.Web.Client.Services.Extensions;
 
 namespace Cookbook.Web.Client.Services {
-    public class TagService : ITagService {
-        private readonly HttpClient _http;
+    public class TagClientService : ITagClientService {
+        private readonly IApiHttpService _http;
 
-        public TagService(HttpClient http) {
+        public TagClientService(IApiHttpService http) {
             _http = http;
         }
 
         /// <inheritdoc />
-        public async Task SetTagForRecipe(long recipeId, TagEdit tag) {
-            await _http.PostJsonAsync($"api/recipes/{recipeId}/tags", tag);
+        public async Task AddTagForRecipe(long recipeId, TagEdit tag) {
+            await _http.PostAsync($"api/recipes/{recipeId}/tags", tag);
         }
 
         /// <inheritdoc />
