@@ -9,6 +9,7 @@ namespace Cookbook.Business.RecipeServices {
         Task<long> CreateEmptyAsync();
         Task UpdateAsync(long id, RecipeUpdate recipe);
         Task DeleteAsync(long id);
+        Task<IEnumerable<TagDto>> GetTagsAsync(long id);
         Task<TagDto> AddTagAsync(long id, TagEdit tag);
         Task RemoveTagAsync(long id, long tagId);
     }

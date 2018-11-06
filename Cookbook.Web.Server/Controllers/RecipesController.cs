@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cookbook.Business.RecipeServices;
 using Cookbook.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,11 @@ namespace Cookbook.Web.Server.Controllers {
         public async Task<IActionResult> Delete(int id) {
             await _recipeService.DeleteAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("{id}/tags")]
+        public async Task<IEnumerable<TagDto>> GetTags(long id) {
+            return await _recipeService.GetTagsAsync(id);
         }
 
         [HttpPost("{id}/tags")]

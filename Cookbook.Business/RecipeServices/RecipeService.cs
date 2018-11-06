@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -44,6 +45,13 @@ namespace Cookbook.Business.RecipeServices {
         public async Task DeleteAsync(long id) {
             await _repo.DeleteAsync(id);
             await _repo.SaveAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<TagDto>> GetTagsAsync(long id) {
+            var entities = await _appliedTagRepository.GetByRecipeAsync(id);
+            var dtos = _mapper.Map<IEnumerable<TagDto>>(entities);
+            return dtos;
         }
 
         /// <inheritdoc />

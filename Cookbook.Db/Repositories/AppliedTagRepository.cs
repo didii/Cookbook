@@ -27,6 +27,11 @@ namespace Cookbook.Db.Repositories {
         }
 
         /// <inheritdoc />
+        public async Task<IEnumerable<AppliedTag>> GetByRecipeAsync(long recipeId) {
+            return await BaseQuery().Where(x => x.RecipeId == recipeId).ToListAsync();
+        }
+
+        /// <inheritdoc />
         public void Dispose() {
             _context?.Dispose();
         }
