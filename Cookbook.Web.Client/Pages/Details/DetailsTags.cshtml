@@ -1,4 +1,5 @@
 ﻿@inject IDetailsService _detailsService
+@inject ITagService _tagService
 
 <div>
     @foreach (var tag in Tags) {
@@ -20,9 +21,11 @@
     private ICollection<TagDto> Tags { get; set; }
 
     private Action<string> OnTagSet(TagDto tag) {
-        return name => {
-            Console.WriteLine("Tag updated");
-            tag.Name = name;
+        return async name => {
+            Console.WriteLine("Tag set");
+            var removeTask = _tagService.RemoveTagFromRecipe(_detailsService.RecipeId, tag.Id);
+            var setTask = _tagService.SetTagForRecipe(_detailsService.RecipeId, new TagEdit() { Name = name });
+            await Task.WhenAll(removeTask, setTask);
         };
     }
 
