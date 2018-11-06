@@ -8,6 +8,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Web.Client", "Cookbook.Web.Client\Cookbook.Web.Client.csproj", "{CF971CA7-6481-4A79-BDC1-47D559DBDF9F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Items", "00 Solution Items", "{3CECC5A6-CFAB-400E-802B-ABAAC2ECDCF5}"
+	ProjectSection(SolutionItems) = preProject
+		BackendDependencies.png = BackendDependencies.png
+		Dependencies.png = Dependencies.png
+		FrontentDependencies.png = FrontentDependencies.png
+		Readme.md = Readme.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Domain Layer", "01 Domain Layer", "{56544A95-BD4F-47E8-A20D-6C28D08E8B2B}"
 EndProject
@@ -31,9 +37,9 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Cookbook.Sql", "Cookbook.Sq
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06 Client", "06 Client", "{974A272A-AEFD-416F-B0A2-2D3AA01933DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Web.Client.Services", "Cookbook.Web.Client.Services\Cookbook.Web.Client.Services.csproj", "{40002980-61E2-4FFD-99E7-1D0D08FA1E6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Web.Client.Services", "Cookbook.Web.Client.Services\Cookbook.Web.Client.Services.csproj", "{40002980-61E2-4FFD-99E7-1D0D08FA1E6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.Infrastructure", "Cookbook.Infrastructure\Cookbook.Infrastructure.csproj", "{2FF4C826-3238-44C8-B0EA-3998F69687C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.Infrastructure", "Cookbook.Infrastructure\Cookbook.Infrastructure.csproj", "{2FF4C826-3238-44C8-B0EA-3998F69687C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
