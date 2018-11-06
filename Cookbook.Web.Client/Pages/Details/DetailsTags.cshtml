@@ -1,39 +1,57 @@
 ﻿@inject IDetailsService _detailsService
 @inject ITagClientService TagClientService
 
-<div>
+<div class="loading-container @IsLoadingClass">
     @foreach (var tag in Tags) {
-        <div style="display: inline-block">
+        <div class="d-inline-block">
             <DetailsTag Tag="tag"
                         TagSet="@(async x => await OnTagSet(tag, x))"
                         TagRemoved="@(async x => await OnTagRemoved(x))">
             </DetailsTag>
         </div>
     }
-    <div style="display: inline-block">
+    <div class="d-inline-block">
         <DetailsTag TagSet="@(async x => await OnTagAdded(x))"></DetailsTag>
     </div>
+    <div class="loading-overlay @IsLoadingClass"></div>
 </div>
 
 @functions {
 
     [Parameter]
-    private ICollection<TagDto> Tags { get; set; }
+    private IList<TagDto> Tags { get; set; }
 
     private async Task OnTagSet(TagDto tag, string newName) {
-        await TagClientService.RemoveTagFromRecipe(_detailsService.RecipeId, tag.Id);
-        await TagClientService.AddTagForRecipe(_detailsService.RecipeId, new TagEdit() { Name = newName });
+        IsLoading = true;
+        StateHasChanged();
+        await TagClientService.RemoveTagFromRecipeAsync(_detailsService.RecipeId, tag.Id);
+        var newTag = await TagClientService.AddTagForRecipeAsync(_detailsService.RecipeId, new TagEdit() { Name = newName });
+        Tags.ReplaceWithId(tag.Id, newTag);
+        IsLoading = false;
+        StateHasChanged();
     }
 
     private async Task OnTagRemoved(TagDto tag) {
-        await TagClientService.RemoveTagFromRecipe(_detailsService.RecipeId, tag.Id);
+        IsLoading = true;
+        await TagClientService.RemoveTagFromRecipeAsync(_detailsService.RecipeId, tag.Id);
+        IsLoading = false;
         StateHasChanged();
     }
 
     private async Task OnTagAdded(string name) {
-        await TagClientService.AddTagForRecipe(_detailsService.RecipeId, new TagEdit() { Name = name });
+        IsLoading = true;
+        await TagClientService.AddTagForRecipeAsync(_detailsService.RecipeId, new TagEdit() { Name = name });
         Tags.Add(new TagDto() { Name = name });
+        IsLoading = false;
         StateHasChanged();
     }
 
+    private async Task SwapLoad() {
+        IsLoading = !IsLoading;
+        StateHasChanged();
+    }
+
+    private bool IsLoading { get; set; } = false;
+
+    private string IsLoadingClass => IsLoading ? "is-loading " : "";
 }

@@ -137,3 +137,22 @@ button.popup-small {
 .container-heading hr {
     margin: 8px 0;
 }
+
+.loading-container {
+    position: relative;
+}
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 5;
+    display: none;
+}
+.loading-container.is-loading {
+    opacity: 0.5;
+}
+.loading-overlay.is-loading {
+    display: inherit;
+}
