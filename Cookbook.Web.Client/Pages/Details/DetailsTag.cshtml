@@ -83,16 +83,17 @@
     }
 
     private void OnKeyDown(UIKeyboardEventArgs args) {
-        if (args.Code == "Tab") {
+        if (args.Key == "Tab") {
             Next?.Invoke();
         }
     }
 
     private void OnKeyUp(UIKeyboardEventArgs args) {
-        if (args.Code == "Enter") {
+        Console.WriteLine(Microsoft.JSInterop.Json.Serialize(args));
+        if (args.Key == "Enter") {
             Save();
         }
-        else if (args.Code == "Escape") {
+        else if (args.Key == "Escape") {
             Cancel();
         }
     }
