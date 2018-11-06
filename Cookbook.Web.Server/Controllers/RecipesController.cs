@@ -34,5 +34,16 @@ namespace Cookbook.Web.Server.Controllers {
             await _recipeService.DeleteAsync(id);
             return NoContent();
         }
+
+        [HttpPost("{id}/tags")]
+        public async Task<TagDto> AddTag(long id, [FromBody] TagEdit tag) {
+            return await _recipeService.AddTagAsync(id, tag);
+        }
+
+        [HttpDelete("{id}/tags/{tagId}")]
+        public async Task<IActionResult> RemoveTag(long id, long tagId) {
+            await _recipeService.RemoveTagAsync(id, tagId);
+            return NoContent();
+        }
     }
 }
