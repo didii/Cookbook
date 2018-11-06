@@ -23,35 +23,37 @@
 
     private async Task OnTagSet(TagDto tag, string newName) {
         IsLoading = true;
-        StateHasChanged();
         await TagClientService.RemoveTagFromRecipeAsync(_detailsService.RecipeId, tag.Id);
         var newTag = await TagClientService.AddTagForRecipeAsync(_detailsService.RecipeId, new TagEdit() { Name = newName });
         Tags.ReplaceWithId(tag.Id, newTag);
         IsLoading = false;
-        StateHasChanged();
     }
 
     private async Task OnTagRemoved(TagDto tag) {
         IsLoading = true;
         await TagClientService.RemoveTagFromRecipeAsync(_detailsService.RecipeId, tag.Id);
+        Tags.RemoveWithId(tag.Id);
         IsLoading = false;
-        StateHasChanged();
     }
 
     private async Task OnTagAdded(string name) {
         IsLoading = true;
-        await TagClientService.AddTagForRecipeAsync(_detailsService.RecipeId, new TagEdit() { Name = name });
-        Tags.Add(new TagDto() { Name = name });
+        var newTag = await TagClientService.AddTagForRecipeAsync(_detailsService.RecipeId, new TagEdit() { Name = name });
+        Tags.Add(newTag);
         IsLoading = false;
-        StateHasChanged();
     }
 
-    private async Task SwapLoad() {
-        IsLoading = !IsLoading;
-        StateHasChanged();
-    }
+    private bool _isLoading = false;
 
-    private bool IsLoading { get; set; } = false;
+    private bool IsLoading {
+        get => _isLoading;
+        set {
+            if (_isLoading != value) {
+                _isLoading = value;
+                StateHasChanged();
+            }
+        }
+    }
 
     private string IsLoadingClass => IsLoading ? "is-loading " : "";
 }
