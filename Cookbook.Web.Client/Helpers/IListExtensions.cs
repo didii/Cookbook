@@ -14,5 +14,14 @@ namespace Cookbook.Web.Client.Helpers {
                 break;
             }
         }
+
+        public static void RemoveWithId<T>(this IList<T> source, long id) where T : IIdProperty {
+            for (int i = 0; i < source.Count; i++) {
+                if (source[i].Id != id)
+                    continue;
+                source.RemoveAt(i);
+                break;
+            }
+        }
     }
 }
