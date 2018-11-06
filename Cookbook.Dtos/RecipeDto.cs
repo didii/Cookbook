@@ -13,7 +13,7 @@ namespace Cookbook.Dtos {
         public IEnumerable<IngredientDto> Ingredients { get; set; }
         public IEnumerable<RecipeHowToDto> HowTo { get; set; }
         public IEnumerable<CommentDto> Comments { get; set; }
-        public ICollection<TagDto> Tags { get; set; }
+        public IList<TagDto> Tags { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }
         public UserDto CreatedBy { get; set; }
