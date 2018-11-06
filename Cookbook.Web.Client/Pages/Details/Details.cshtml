@@ -1,6 +1,6 @@
 ﻿@page "/details/{idString}"
 @inject IDetailsService _detailsService
-@inject HttpClient _http
+@inject IRecipeClientService _recipeClientService
 
 <div class="btn-group" style="position: absolute; right: 10px;">
     @if (!_detailsService.IsEditMode) {
@@ -38,16 +38,11 @@ else {
 
     protected override async Task OnInitAsync() {
         _detailsService.RecipeId = long.Parse(IdString);
-        Recipe = await _http.GetJsonAsync<RecipeDto>($"api/recipes/{_detailsService.RecipeId}");
+        Recipe = await _recipeClientService.GetAsync(_detailsService.RecipeId);
+        StateHasChanged();
     }
 
-    private RecipeDto Recipe { get; set; } = new RecipeDto() {
-        Tags = new List<TagDto>() {
-            new TagDto() { Id = 1, Name = "tag1" },
-            new TagDto() { Id = 2, Name = "tag2" },
-            new TagDto() { Id = 3, Name = "longerTagName" },
-        }
-    };
+    private RecipeDto Recipe { get; set; }
 
     [Parameter]
     private string IdString { get; set; }

@@ -1,18 +1,18 @@
 ﻿@inject IDetailsService _detailsService
-@inject ITagService _tagService
+@inject ITagClientService TagClientService
 
 <div>
     @foreach (var tag in Tags) {
         <div style="display: inline-block">
             <DetailsTag Tag="tag"
-                        TagSet="@OnTagSet(tag)"
-                        TagRemoved="@OnTagRemoved">
+                        TagSet="@(async x => await OnTagSet(tag, x))"
+                        TagRemoved="@(async x => await OnTagRemoved(x))">
             </DetailsTag>
         </div>
     }
-        <div style="display: inline-block">
-            <DetailsTag TagSet="@OnTagAdded"></DetailsTag>
-        </div>
+    <div style="display: inline-block">
+        <DetailsTag TagSet="@(async x => await OnTagAdded(x))"></DetailsTag>
+    </div>
 </div>
 
 @functions {
@@ -20,23 +20,19 @@
     [Parameter]
     private ICollection<TagDto> Tags { get; set; }
 
-    private Action<string> OnTagSet(TagDto tag) {
-        return async name => {
-            Console.WriteLine("Tag set");
-            var removeTask = _tagService.RemoveTagFromRecipe(_detailsService.RecipeId, tag.Id);
-            var setTask = _tagService.SetTagForRecipe(_detailsService.RecipeId, new TagEdit() { Name = name });
-            await Task.WhenAll(removeTask, setTask);
-        };
+    private async Task OnTagSet(TagDto tag, string newName) {
+        await TagClientService.RemoveTagFromRecipe(_detailsService.RecipeId, tag.Id);
+        await TagClientService.AddTagForRecipe(_detailsService.RecipeId, new TagEdit() { Name = newName });
     }
 
-    private void OnTagRemoved(TagDto tag) {
-        Tags.Remove(tag);
-        Console.WriteLine("Tag removed");
+    private async Task OnTagRemoved(TagDto tag) {
+        await TagClientService.RemoveTagFromRecipe(_detailsService.RecipeId, tag.Id);
         StateHasChanged();
     }
 
-    private void OnTagAdded(string name) {
-        Tags.Add(new TagDto(){Name = name});
+    private async Task OnTagAdded(string name) {
+        await TagClientService.AddTagForRecipe(_detailsService.RecipeId, new TagEdit() { Name = name });
+        Tags.Add(new TagDto() { Name = name });
         StateHasChanged();
     }
 
