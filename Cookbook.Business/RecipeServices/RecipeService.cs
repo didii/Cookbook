@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Cookbook.Db.Repositories;
@@ -8,16 +9,21 @@ using Cookbook.Dtos;
 namespace Cookbook.Business.RecipeServices {
     internal class RecipeService : IRecipeService {
         private readonly IRecipeRepository _repo;
+        private readonly ITagRepository _tagRepository;
+        private readonly IAppliedTagRepository _appliedTagRepository;
         private readonly IMapper _mapper;
 
-        public RecipeService(IRecipeRepository repo, IMapper mapper) {
+        public RecipeService(IRecipeRepository repo, ITagRepository tagRepository, IAppliedTagRepository appliedTagRepository, IMapper mapper) {
             _repo = repo;
+            _tagRepository = tagRepository;
+            _appliedTagRepository = appliedTagRepository;
             _mapper = mapper;
         }
         /// <inheritdoc />
         public async Task<RecipeDto> GetAsync(long id) {
             var entity = await _repo.GetAsync(id);
             var model = _mapper.Map<RecipeDto>(entity);
+            await _repo.SaveAsync();
             return model;
         }
 
@@ -31,11 +37,34 @@ namespace Cookbook.Business.RecipeServices {
             var entity = await _repo.GetAsync(id);
             _repo.Update(entity);
             _mapper.Map(recipe, entity);
+            await _repo.SaveAsync();
         }
 
         /// <inheritdoc />
         public async Task DeleteAsync(long id) {
             await _repo.DeleteAsync(id);
+            await _repo.SaveAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task<TagDto> AddTagAsync(long id, TagEdit tag) {
+            var tagEntity = await _tagRepository.GetByName(tag.Name);
+            if (tagEntity == null) {
+                tagEntity = _mapper.Map<Tag>(tag);
+                await _tagRepository.CreateAsync(tagEntity);
+            }
+            var appliedTagEntity = new AppliedTag() { RecipeId = id, Tag = tagEntity };
+            await _appliedTagRepository.CreateAsync(appliedTagEntity);
+            await _repo.SaveAsync();
+            var dto = _mapper.Map<TagDto>(appliedTagEntity);
+            return dto;
+        }
+
+        /// <inheritdoc />
+        public async Task RemoveTagAsync(long id, long tagId) {
+            await _appliedTagRepository.DeleteAsync(id, tagId);
+            await _tagRepository.UpdateAsync(tagId);
+            await _repo.SaveAsync();
         }
     }
 }

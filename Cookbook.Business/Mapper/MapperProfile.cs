@@ -18,6 +18,7 @@ namespace Cookbook.Business.Mapper {
 
             // Tags
             CreateMap<AppliedTag, TagDto>().ConvertUsing<AppliedTag_TagDto>();
+            CreateMap<TagEdit, Tag>(MemberList.Source);
         }
     }
 }
