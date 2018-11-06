@@ -14,8 +14,8 @@ namespace Cookbook.Web.Client.Services {
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TagDto>> GetAllForRecipeAsync(long recipeId) {
-            return await _http.GetAsync<IEnumerable<TagDto>>($"api/recipes/{recipeId}/tags");
+        public async Task<IList<TagDto>> GetAllForRecipeAsync(long recipeId) {
+            return await _http.GetAsync<IList<TagDto>>($"api/recipes/{recipeId}/tags");
         }
 
         /// <inheritdoc />
