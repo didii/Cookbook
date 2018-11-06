@@ -13,5 +13,6 @@ namespace Cookbook.Web.Client.Services {
         Task<T> PutAsync<T>(string uri, object body = null);
         Task<HttpResponseMessage> DeleteAsync(string uri);
         Task<T> DeleteAsync<T>(string uri);
+        void AssertResponse(HttpResponseMessage response);
     }
 }

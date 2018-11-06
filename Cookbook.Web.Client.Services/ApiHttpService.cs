@@ -53,6 +53,12 @@ namespace Cookbook.Web.Client.Services {
             return await SendAsync<T>(HttpMethod.Delete, uri);
         }
 
+        /// <inheritdoc />
+        public void AssertResponse(HttpResponseMessage response) {
+            if (!response.IsSuccessStatusCode)
+                throw new HttpResponseException(response);
+        }
+
         private async Task<HttpResponseMessage> SendAsync(HttpMethod method, string uri, object body = null) {
             //Console.WriteLine($"Http {method} - {uri}");
             var request = new HttpRequestMessage(method, uri);

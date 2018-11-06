@@ -14,13 +14,19 @@ namespace Cookbook.Web.Client.Services {
         }
 
         /// <inheritdoc />
-        public async Task AddTagForRecipe(long recipeId, TagEdit tag) {
-            await _http.PostAsync($"api/recipes/{recipeId}/tags", tag);
+        public async Task<IEnumerable<TagDto>> GetAllForRecipeAsync(long recipeId) {
+            return await _http.GetAsync<IEnumerable<TagDto>>($"api/recipes/{recipeId}/tags");
         }
 
         /// <inheritdoc />
-        public async Task RemoveTagFromRecipe(long recipeId, long tagId) {
-            await _http.DeleteAsync($"api/recipes/{recipeId}/tags/{tagId}");
+        public async Task<TagDto> AddTagForRecipeAsync(long recipeId, TagEdit tag) {
+            return await _http.PostAsync<TagDto>($"api/recipes/{recipeId}/tags", tag);
+        }
+
+        /// <inheritdoc />
+        public async Task RemoveTagFromRecipeAsync(long recipeId, long tagId) {
+            var response = await _http.DeleteAsync($"api/recipes/{recipeId}/tags/{tagId}");
+            _http.AssertResponse(response);
         }
     }
 }
