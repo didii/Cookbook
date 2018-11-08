@@ -1,0 +1,21 @@
+﻿<p class="text-secondary">@Description</p>
+
+
+@functions {
+
+    [Parameter]
+    private string Description { get; set; }
+
+    [Parameter]
+    private Action<string> DescriptionChanged { get; set; }
+
+    private bool _isEdit = false;
+    private bool IsEdit {
+        get => _isEdit;
+        set {
+            if (_isEdit == value) return;
+            _isEdit = value;
+            StateHasChanged();
+        }
+    }
+}

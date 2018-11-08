@@ -3,9 +3,9 @@
         <span class="fa fa-star fa-5x"></span>
     </div>
     <div class="col-md-8">
-        <h1>@Recipe.Name</h1>
+        <DetailsTitle Title="@Recipe.Name" TitleChanged="@OnTitleChanged"></DetailsTitle>
         <hr/>
-        <p class="text-secondary">@Recipe.Description</p>
+        <DetailsDescription Description="@Recipe.Description"></DetailsDescription>
     </div>
     <div class="col-md-3">
         <div class="row text-center align-middle">
@@ -30,4 +30,8 @@
     [Parameter]
     private RecipeDto Recipe { get; set; }
 
+    private void OnTitleChanged(string newTitle) {
+        Recipe.Name = newTitle;
+        StateHasChanged();
+    }
 }
