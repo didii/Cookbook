@@ -24,7 +24,7 @@ namespace Cookbook.Business.RecipeServices {
         public async Task<RecipeDto> GetAsync(long id) {
             var entity = await _repo.GetAsync(id);
             var model = _mapper.Map<RecipeDto>(entity);
-            await _repo.SaveAsync();
+            model.Tags = model.Tags.OrderBy(x => x.Name).ToList();
             return model;
         }
 
