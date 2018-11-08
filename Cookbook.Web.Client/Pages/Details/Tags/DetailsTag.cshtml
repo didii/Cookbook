@@ -1,5 +1,4 @@
-﻿@implements IDisposable
-@inject IDetailsService _detailsService
+﻿@inject IDetailsService _detailsService
 
 <Toolbar ref="toolbar" CanRemove="@(Tag != null)" Saved="@Save" Removed="@OnRemove" Cancelled="@Cancel"></Toolbar>
 <span ref="span" onclick="@SetEditMode" class="badge badge-info">
@@ -29,10 +28,6 @@
     // Lifecycle methods
     private bool FirstCall { get; set; } = true;
 
-    protected override void OnInit() {
-        _detailsService.ComponentInEditModeChanged += OnComponentInEditModeChanged;
-    }
-
     protected override void OnAfterRender() {
         if (FirstCall) {
             FirstCall = false;
@@ -61,21 +56,12 @@
         span.Show();
     }
 
-    public void Dispose() {
-        _detailsService.ComponentInEditModeChanged -= OnComponentInEditModeChanged;
-    }
-
     // Privates
     private string InputName { get; set; }
 
     private Toolbar toolbar;
     private ElementRef span;
     private ElementRef input;
-
-    private void OnComponentInEditModeChanged(BlazorComponent component) {
-        if (component != this)
-            Cancel();
-    }
 
     private void OnRemove() {
         TagRemoved?.Invoke(Tag);
