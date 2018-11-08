@@ -102,6 +102,12 @@ app {
     margin-right: 5px;
 }
 
+.input-h1 {
+    font-size: 2.5rem;
+    width: 100%;
+    border: 2px solid rgba(0, 123, 255, .25);
+    border-radius: .25rem;
+}
 .input-badge {
     border: none;
     font-size: 75%;
