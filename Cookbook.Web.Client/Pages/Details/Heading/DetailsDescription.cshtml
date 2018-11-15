@@ -1,21 +1,72 @@
-﻿<p class="text-secondary">@Description</p>
+﻿@implements IDisposable
+@inject IDetailsService _detailsService
 
+<Editable ref="EditComponent" Saved="@OnSave" Cancelled="@OnCancel">
+    <ViewTemplate>
+        <span onclick="@OnClick" class="text-muted">@Description</span>
+    </ViewTemplate>
+    <EditTemplate>
+        <input bind="@_tempDescription" onkeyup="@OnKeyUp" class="form-control"/>
+    </EditTemplate>
+</Editable>
 
 @functions {
 
+    //Refs
+    private Editable EditComponent;
+
+    //Parameters
     [Parameter]
     private string Description { get; set; }
 
     [Parameter]
     private Action<string> DescriptionChanged { get; set; }
 
-    private bool _isEdit = false;
-    private bool IsEdit {
-        get => _isEdit;
-        set {
-            if (_isEdit == value) return;
-            _isEdit = value;
-            StateHasChanged();
-        }
+    //Lifecycle
+    protected override void OnInit() {
+        _detailsService.IsEditModeChanged += OnIsEditModeChanged;
+        _detailsService.ComponentInEditModeChanged += OnComponentInEditModeChanged;
+    }
+
+    //Public
+    public void Dispose() {
+        _detailsService.IsEditModeChanged -= OnIsEditModeChanged;
+        _detailsService.ComponentInEditModeChanged -= OnComponentInEditModeChanged;
+    }
+
+    //Non-public
+    private string _tempDescription;
+
+    private void OnSave() {
+        DescriptionChanged?.Invoke(_tempDescription);
+        EditComponent.SetEditMode(false);
+    }
+
+    private void OnCancel() {
+        EditComponent.SetEditMode(false);
+    }
+
+    private void OnClick() {
+        if (!_detailsService.IsEditMode) return;
+        _tempDescription = Description;
+        EditComponent.SetEditMode(true);
+    }
+
+    private void OnKeyUp(UIKeyboardEventArgs args) {
+        if (args.Code == "Enter")
+            OnSave();
+        else if (args.Code == "Escape")
+            OnCancel();
+    }
+
+
+    private void OnIsEditModeChanged(bool isEdit) {
+        if (!isEdit)
+            OnCancel();
+    }
+
+    private void OnComponentInEditModeChanged(BlazorComponent component) {
+        if (component != this)
+            OnCancel();
     }
 }
