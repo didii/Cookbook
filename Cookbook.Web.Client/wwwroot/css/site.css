@@ -102,6 +102,12 @@ app {
     margin-right: 5px;
 }
 
+.main-toolbar {
+    position: absolute;
+    right: 10px;
+    z-index: 99;
+}
+
 .input-h1 {
     font-size: 2.5rem;
     width: 100%;
