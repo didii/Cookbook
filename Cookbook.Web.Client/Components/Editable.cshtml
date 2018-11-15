@@ -1,0 +1,74 @@
+﻿<div ref="ToolbarContainer">
+    <Toolbar Saved="@OnSave" Cancelled="@OnCancel"></Toolbar>
+</div>
+<div ref="ViewTemplateContainer">@ViewTemplate</div>
+<div ref="EditTemplateContainer">@EditTemplate</div>
+
+@functions {
+
+    //Refs
+    private ElementRef ToolbarContainer;
+    private ElementRef ViewTemplateContainer;
+    private ElementRef EditTemplateContainer;
+
+    //Parameters
+    [Parameter]
+    private RenderFragment ViewTemplate { get; set; }
+
+    [Parameter]
+    private RenderFragment EditTemplate { get; set; }
+
+    [Parameter]
+    private Action Saved { get; set; }
+
+    [Parameter]
+    private Action Cancelled { get; set; }
+
+    [Parameter]
+    private Action Deleted { get; set; }
+
+    //Lifecycle
+    private bool _firstCall = true;
+
+    protected override void OnAfterRender() {
+        if (_firstCall) {
+            _firstCall = false;
+            SetEditMode(false);
+        }
+    }
+
+    //Public methods
+    public void SetEditMode(bool on) {
+        _isEdit = on;
+        if (on)
+            SetEditModeOn();
+        else
+            SetEditModeOff();
+    }
+
+    //Non-public methods
+    private void OnSave() {
+        Saved?.Invoke();
+    }
+
+    private void OnCancel() {
+        Cancelled?.Invoke();
+    }
+
+    private bool _isEdit;
+    protected virtual bool IsEdit { get; }
+
+    protected virtual void SetEditModeOn() {
+        ToolbarContainer.Show();
+        ViewTemplateContainer.Hide();
+        EditTemplateContainer.Show();
+        EditTemplateContainer.Focus();
+    }
+
+    protected virtual void SetEditModeOff() {
+        ToolbarContainer.Hide();
+        ViewTemplateContainer.Show();
+        EditTemplateContainer.Hide();
+    }
+
+}
