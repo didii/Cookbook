@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.JsonPatch">
+      <HintPath>..\..\..\Users\DiVa\.nuget\packages\microsoft.aspnetcore.jsonpatch\2.1.0\lib\netstandard2.0\Microsoft.AspNetCore.JsonPatch.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.JSInterop">
       <HintPath>..\..\..\Users\DiVa\.nuget\packages\microsoft.jsinterop\0.6.0\lib\netstandard2.0\Microsoft.JSInterop.dll</HintPath>
     </Reference>
