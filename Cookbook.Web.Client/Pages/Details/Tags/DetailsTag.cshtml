@@ -28,6 +28,10 @@
     // Lifecycle methods
     private bool FirstCall { get; set; } = true;
 
+    protected override void OnInit() {
+        _detailsService.ComponentInEditModeChanged += OnComponentInEditModeChanged;
+    }
+
     protected override void OnAfterRender() {
         if (FirstCall) {
             FirstCall = false;
@@ -36,24 +40,24 @@
     }
 
     // Public methods
-    public void SetEditMode() {
+    public async Task SetEditMode() {
         _detailsService.ComponentInEditMode = this;
         InputName = Tag?.Name ?? "";
-        span.Hide();
+        await span.Hide();
         toolbar.Show();
-        input.Show();
-        input.Focus();
+        await input.Show();
+        await input.Focus();
     }
 
-    public void Save() {
+    public async Task Save() {
         TagSet?.Invoke(InputName);
-        Cancel();
+        await Cancel();
     }
 
-    public void Cancel() {
+    public async Task Cancel() {
         toolbar.Hide();
-        input.Hide();
-        span.Show();
+        await input.Hide();
+        await span.Show();
     }
 
     // Privates
@@ -63,25 +67,28 @@
     private ElementRef span;
     private ElementRef input;
 
-    private void OnRemove() {
+    private async Task OnRemove() {
         TagRemoved?.Invoke(Tag);
-        Cancel();
+        await Cancel();
     }
 
-    private void OnKeyDown(UIKeyboardEventArgs args) {
+    private async Task OnKeyDown(UIKeyboardEventArgs args) {
         if (args.Key == "Tab") {
             Next?.Invoke();
         }
     }
 
-    private void OnKeyUp(UIKeyboardEventArgs args) {
-        Console.WriteLine(Microsoft.JSInterop.Json.Serialize(args));
+    private async Task OnKeyUp(UIKeyboardEventArgs args) {
         if (args.Key == "Enter") {
-            Save();
+            await Save();
         }
         else if (args.Key == "Escape") {
-            Cancel();
+            await Cancel();
         }
     }
 
+    private async Task OnComponentInEditModeChanged(BlazorComponent component) {
+        if (component != this)
+            await Cancel();
+    }
 }
