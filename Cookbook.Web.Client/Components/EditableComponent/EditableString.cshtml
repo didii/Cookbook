@@ -1,0 +1,83 @@
+﻿@implements IDisposable
+@inject IDetailsService _detailsService
+
+<Editable ref="Editable" SaveClicked="OnSaved" CancelClicked="OnCancelled">
+    <ViewTemplate>
+        @ViewTemplate(Value)
+    </ViewTemplate>
+    <EditTemplate>
+        @EditTemplate(_model)
+    </EditTemplate>
+</Editable>
+
+@functions {
+
+    private Editable Editable;
+
+    // Parameters
+    [Parameter]
+    private string Value { get; set; }
+
+    [Parameter]
+    private Action<string> ValueChanged { get; set; }
+
+    [Parameter]
+    private RenderFragment<string> ViewTemplate { get; set; }
+
+    [Parameter]
+    private RenderFragment<EditableModel<string>> EditTemplate { get; set; }
+
+    private EditableModel<string> _model = new EditableModel<string>();
+
+    // Lifecycle methods
+    protected override void OnInit() {
+        _detailsService.IsEditModeChanged += OnIsEditModeChanged;
+        _detailsService.ComponentInEditModeChanged += OnComponentInEditModeChanged;
+    }
+
+    // Public methods
+    public async Task Edit() {
+        if (!_detailsService.IsEditMode) return;
+        _model.OriginalValue = Value;
+        _model.CurrentValue = Value;
+        _detailsService.ComponentInEditMode = this;
+        await Editable.SetEditMode(true);
+    }
+
+    public async Task Save() {
+        Value = _model.CurrentValue;
+        ValueChanged?.Invoke(_model.CurrentValue);
+        await Editable.SetEditMode(false);
+    }
+
+    public async Task Cancel() {
+        await Editable.SetEditMode(false);
+    }
+
+    public void Dispose() {
+        _detailsService.IsEditModeChanged -= OnIsEditModeChanged;
+        _detailsService.ComponentInEditModeChanged -= OnComponentInEditModeChanged;
+    }
+
+    // Private methods
+    private async Task OnSaved() {
+        await Save();
+    }
+
+    private async Task OnCancelled() {
+        await Cancel();
+    }
+
+    private async Task OnIsEditModeChanged(bool isEdit) {
+        if (!isEdit) {
+            await Cancel();
+        }
+    }
+
+    private async Task OnComponentInEditModeChanged(BlazorComponent component) {
+        if (component != this) {
+            await Cancel();
+        }
+    }
+
+}

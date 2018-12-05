@@ -1,4 +1,5 @@
-﻿<div ref="ToolbarContainer">
+﻿@using System.Threading
+<div ref="ToolbarContainer">
     <Toolbar Saved="@OnSave" Cancelled="@OnCancel"></Toolbar>
 </div>
 <div ref="ViewTemplateContainer">@ViewTemplate</div>
@@ -19,10 +20,10 @@
     private RenderFragment EditTemplate { get; set; }
 
     [Parameter]
-    private Action Saved { get; set; }
+    private Func<Task> SaveClicked { get; set; }
 
     [Parameter]
-    private Action Cancelled { get; set; }
+    private Func<Task> CancelClicked { get; set; }
 
     [Parameter]
     private Action Deleted { get; set; }
@@ -30,45 +31,44 @@
     //Lifecycle
     private bool _firstCall = true;
 
-    protected override void OnAfterRender() {
+    protected override async Task OnAfterRenderAsync() {
         if (_firstCall) {
             _firstCall = false;
-            SetEditMode(false);
+            await SetEditMode(false);
         }
     }
 
     //Public methods
-    public void SetEditMode(bool on) {
+    public async Task SetEditMode(bool on) {
         _isEdit = on;
         if (on)
-            SetEditModeOn();
+            await SetEditModeOn();
         else
-            SetEditModeOff();
+            await SetEditModeOff();
     }
 
     //Non-public methods
-    private void OnSave() {
-        Saved?.Invoke();
+    private async Task OnSave() {
+        await SaveClicked?.Invoke();
     }
 
-    private void OnCancel() {
-        Cancelled?.Invoke();
+    private async Task OnCancel() {
+        await CancelClicked?.Invoke();
     }
 
     private bool _isEdit;
     protected virtual bool IsEdit { get; }
 
-    protected virtual void SetEditModeOn() {
-        ToolbarContainer.Show();
-        ViewTemplateContainer.Hide();
-        EditTemplateContainer.Show();
-        EditTemplateContainer.Focus();
+    protected virtual async Task SetEditModeOn() {
+        await ToolbarContainer.Show();
+        await ViewTemplateContainer.Hide();
+        await EditTemplateContainer.Show();
     }
 
-    protected virtual void SetEditModeOff() {
-        ToolbarContainer.Hide();
-        ViewTemplateContainer.Show();
-        EditTemplateContainer.Hide();
+    protected virtual async Task SetEditModeOff() {
+        await ToolbarContainer.Hide();
+        await ViewTemplateContainer.Show();
+        await EditTemplateContainer.Hide();
     }
 
 }

@@ -26,13 +26,13 @@
     private bool CanRemove { get; set; }
 
     [Parameter]
-    private Action Saved { get; set; }
+    private Func<Task> Saved { get; set; }
 
     [Parameter]
-    private Action Removed { get; set; }
+    private Func<Task> Removed { get; set; }
 
     [Parameter]
-    private Action Cancelled { get; set; }
+    private Func<Task> Cancelled { get; set; }
 
     private ElementRef container;
 }
