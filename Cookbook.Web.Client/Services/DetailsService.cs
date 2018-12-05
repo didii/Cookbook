@@ -10,13 +10,13 @@ namespace Cookbook.Web.Client.Services {
         private BlazorComponent _componentInEditMode;
 
         /// <inheritdoc />
-        public event Action<bool> IsEditModeChanged;
+        public event Func<bool, Task> IsEditModeChanged;
 
         /// <inheritdoc />
-        public event Action<BlazorComponent> ComponentInEditModeChanged;
+        public event Func<BlazorComponent, Task> ComponentInEditModeChanged;
 
         /// <inheritdoc />
-        public event Action Discarding;
+        public event Func<Task> Discarding;
 
 
         /// <inheritdoc />

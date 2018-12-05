@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Blazor.Components;
 
 namespace Cookbook.Web.Client.Services {
     public interface IDetailsService {
-        event Action<bool> IsEditModeChanged;
-        event Action<BlazorComponent> ComponentInEditModeChanged;
-        event Action Discarding;
+        event Func<bool, Task> IsEditModeChanged;
+        event Func<BlazorComponent, Task> ComponentInEditModeChanged;
+        event Func<Task> Discarding;
 
         long RecipeId { get; set; }
         bool IsEditMode { get; set; }
