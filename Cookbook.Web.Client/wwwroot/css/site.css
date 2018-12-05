@@ -108,6 +108,17 @@ app {
     z-index: 99;
 }
 
+.page-loading-container {
+
+}
+
+.page-loading-block {
+    border: 2px solid gray;
+    border-radius: .25rem;
+    padding: .75rem 1rem;
+    display: inline-block;
+}
+
 .input-h1 {
     font-size: 2.5rem;
     width: 100%;

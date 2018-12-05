@@ -1,5 +1,6 @@
 ﻿using System;
 using Cookbook.Db.Contexts;
+using Cookbook.Db.Repositories;
 using Cookbook.Domain;
 using Cookbook.Infrastructure;
 using Microsoft.AspNetCore.Identity;
