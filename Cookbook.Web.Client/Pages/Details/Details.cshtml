@@ -2,7 +2,7 @@
 @inject IDetailsService _detailsService
 @inject IRecipeClientService _recipeClientService
 
-<div class="btn-group" style="position: absolute; right: 10px;">
+<div class="btn-group main-toolbar">
     @if (!_detailsService.IsEditMode) {
         <button onclick="@OnEditClick" title="Edit recipe" class="btn btn-link">
             <span class="fa fa-edit xxl"></span>
@@ -22,7 +22,11 @@
 </div>
 
 @if (Recipe == null) {
-    <p>Loading recipe...</p>
+    <div class="page-loading-container">
+        <div class="page-loading-block">
+            <span class="fa fa-spinner fa-spin"></span>
+        </div>
+    </div>
 }
 else {
     <div class="container-tags">
