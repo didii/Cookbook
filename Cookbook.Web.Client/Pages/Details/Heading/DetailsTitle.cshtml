@@ -1,77 +1,41 @@
-﻿<Toolbar ref="Toolbar" CanRemove="false" Saved="@Save" Cancelled="@Cancel"></Toolbar>
-@if (!IsEdit) {
-    <h1 onclick="@OnClick">@Title</h1>
-}
-<input ref="Input" bind="@_tempTitle" onkeyup="@OnKeyUp" hidden class="input-h1"/>
+﻿@inject IDetailsService _detailsService
 
+<EditableString ref="Editable" Value="@Title" ValueChanged="@OnValueChanged">
+    <ViewTemplate>
+        <h1 onclick="@OnClick">@context</h1>
+    </ViewTemplate>
+    <EditTemplate>
+        <input ref="inputElement" bind="@context.CurrentValue" onkeyup="@OnKeyUp" class="input-h1"/>
+    </EditTemplate>
+</EditableString>
 
 @functions {
 
-    private ElementRef Input;
-    private Toolbar Toolbar;
+    private ElementRef inputElement;
 
-    //Parameters
+    private EditableString Editable { get; set; }
+
     [Parameter]
     private string Title { get; set; }
 
     [Parameter]
     private Action<string> TitleChanged { get; set; }
 
-    // Lifecycle methods
-    private bool FirstCall { get; set; } = true;
-
-    protected override void OnAfterRender() {
-        if (FirstCall) {
-            FirstCall = false;
-            Toolbar.Hide();
-        }
+    private void OnValueChanged(string newValue) {
+        Title = newValue;
+        TitleChanged?.Invoke(newValue);
     }
 
-    // Public methods
-    public void Save() {
-        TitleChanged?.Invoke(_tempTitle);
-        IsEdit = false;
+    private async Task OnClick() {
+        await Editable.Edit();
+        await inputElement.Focus();
     }
 
-    public void Cancel() {
-        IsEdit = false;
-    }
-
-    //Actions
-    private void OnClick() {
-        _tempTitle = Title;
-        IsEdit = true;
-    }
-
-    private void OnKeyUp(UIKeyboardEventArgs args) {
-        if (args.Key == "Enter") {
-            Save();
-        }
-        else if (args.Key == "Escape") {
-            Cancel();
-        }
-    }
-
-    private string _tempTitle { get; set; }
-
-    private bool _isEdit = false;
-
-    private bool IsEdit {
-        get => _isEdit;
-        set {
-            if (_isEdit == value)
-                return;
-            _isEdit = value;
-            if (value) {
-                Input.Show();
-                Input.Focus();
-                Toolbar.Show();
-            }
-            else {
-                Input.Hide();
-                Toolbar.Hide();
-            }
-            StateHasChanged();
+    private async Task OnKeyUp(UIKeyboardEventArgs args) {
+        if (args.Code == "Enter") {
+            await Editable.Save();
+        } else if (args.Code == "Escape") {
+            await Editable.Cancel();
         }
     }
 

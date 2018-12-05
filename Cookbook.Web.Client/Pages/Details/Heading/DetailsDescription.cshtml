@@ -1,72 +1,41 @@
-﻿@implements IDisposable
-@inject IDetailsService _detailsService
-
-<Editable ref="EditComponent" Saved="@OnSave" Cancelled="@OnCancel">
+﻿<EditableString ref="Editable" Value="@Description" ValueChanged="@OnValueChanged">
     <ViewTemplate>
-        <span onclick="@OnClick" class="text-muted">@Description</span>
+        <span onclick="@OnClick" class="text-muted">@context</span>
     </ViewTemplate>
     <EditTemplate>
-        <input bind="@_tempDescription" onkeyup="@OnKeyUp" class="form-control"/>
+        <input ref="InputElement" bind="@context.CurrentValue" onkeyup="@OnKeyUp" class="form-control"/>
     </EditTemplate>
-</Editable>
+</EditableString>
 
 @functions {
 
     //Refs
-    private Editable EditComponent;
+    private EditableString Editable;
+    private ElementRef InputElement;
 
     //Parameters
     [Parameter]
     private string Description { get; set; }
 
     [Parameter]
-    private Action<string> DescriptionChanged { get; set; }
+    private Func<string, Task> DescriptionChanged { get; set; }
 
-    //Lifecycle
-    protected override void OnInit() {
-        _detailsService.IsEditModeChanged += OnIsEditModeChanged;
-        _detailsService.ComponentInEditModeChanged += OnComponentInEditModeChanged;
+    // Actions
+    private void OnValueChanged(string newValue) {
+        Description = newValue;
+        DescriptionChanged?.Invoke(newValue);
     }
 
-    //Public
-    public void Dispose() {
-        _detailsService.IsEditModeChanged -= OnIsEditModeChanged;
-        _detailsService.ComponentInEditModeChanged -= OnComponentInEditModeChanged;
+    private async Task OnClick() {
+        await Editable.Edit();
+        await InputElement.Focus();
     }
 
-    //Non-public
-    private string _tempDescription;
-
-    private void OnSave() {
-        DescriptionChanged?.Invoke(_tempDescription);
-        EditComponent.SetEditMode(false);
-    }
-
-    private void OnCancel() {
-        EditComponent.SetEditMode(false);
-    }
-
-    private void OnClick() {
-        if (!_detailsService.IsEditMode) return;
-        _tempDescription = Description;
-        EditComponent.SetEditMode(true);
-    }
-
-    private void OnKeyUp(UIKeyboardEventArgs args) {
+    private async Task OnKeyUp(UIKeyboardEventArgs args) {
         if (args.Code == "Enter")
-            OnSave();
+            await Editable.Save();
         else if (args.Code == "Escape")
-            OnCancel();
+            await Editable.Cancel();
     }
 
-
-    private void OnIsEditModeChanged(bool isEdit) {
-        if (!isEdit)
-            OnCancel();
-    }
-
-    private void OnComponentInEditModeChanged(BlazorComponent component) {
-        if (component != this)
-            OnCancel();
-    }
 }
