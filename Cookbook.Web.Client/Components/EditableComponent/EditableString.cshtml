@@ -36,12 +36,14 @@
     }
 
     // Public methods
-    public async Task Edit() {
-        if (!_detailsService.IsEditMode) return;
+    public async Task<bool> Edit() {
+        if (!_detailsService.IsEditMode)
+            return false;
         _model.OriginalValue = Value;
         _model.CurrentValue = Value;
         _detailsService.ComponentInEditMode = this;
         await Editable.SetEditMode(true);
+        return true;
     }
 
     public async Task Save() {
@@ -50,8 +52,10 @@
         await Editable.SetEditMode(false);
     }
 
-    public async Task Cancel() {
+    public async Task Cancel(bool unset = true) {
         await Editable.SetEditMode(false);
+        if (unset)
+            _detailsService.ComponentInEditMode = null;
     }
 
     public void Dispose() {
@@ -76,7 +80,7 @@
 
     private async Task OnComponentInEditModeChanged(BlazorComponent component) {
         if (component != this) {
-            await Cancel();
+            await Cancel(false);
         }
     }
 
