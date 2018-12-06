@@ -18,7 +18,7 @@
     private string Description { get; set; }
 
     [Parameter]
-    private Func<string, Task> DescriptionChanged { get; set; }
+    private Action<string> DescriptionChanged { get; set; }
 
     // Actions
     private void OnValueChanged(string newValue) {
@@ -27,8 +27,8 @@
     }
 
     private async Task OnClick() {
-        await Editable.Edit();
-        await InputElement.Focus();
+        if (await Editable.Edit())
+            await InputElement.Focus();
     }
 
     private async Task OnKeyUp(UIKeyboardEventArgs args) {

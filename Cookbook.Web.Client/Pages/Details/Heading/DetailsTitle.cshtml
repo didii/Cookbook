@@ -27,8 +27,8 @@
     }
 
     private async Task OnClick() {
-        await Editable.Edit();
-        await inputElement.Focus();
+        if (await Editable.Edit())
+            await inputElement.Focus();
     }
 
     private async Task OnKeyUp(UIKeyboardEventArgs args) {

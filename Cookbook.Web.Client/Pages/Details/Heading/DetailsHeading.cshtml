@@ -1,4 +1,6 @@
-﻿<div class="row">
+﻿@inject IChangeTracker<RecipeUpdate> _changeTracker
+
+<div class="row">
     <div class="col-md-1 align-middle">
         <span class="fa fa-star fa-5x"></span>
     </div>
@@ -32,11 +34,14 @@
 
     private void OnTitleChanged(string newTitle) {
         Recipe.Name = newTitle;
+        _changeTracker.Set(recipe => recipe.Name, newTitle);
         StateHasChanged();
     }
 
-    private async Task OnDescriptionChanged(string newDescription) {
+    private void OnDescriptionChanged(string newDescription) {
         Recipe.Description = newDescription;
+        _changeTracker.Set(recipe => recipe.Description, newDescription);
         StateHasChanged();
     }
+
 }
