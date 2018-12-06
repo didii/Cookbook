@@ -1,0 +1,19 @@
+﻿<div class="table">
+    <div class="col-md-12">
+        @foreach (var ingredient in Ingredients) {
+        <div class="row">
+            <div class="col-sm-1">@ingredient.Id</div>
+            <div class="col-sm-2">@ingredient.QuantityValue</div>
+            <div class="col-sm-2">@ingredient.Quantity.Name</div>
+            <div class="col-sm-7">@ingredient.Food.Name</div>
+        </div>
+        }
+    </div>
+</div>
+
+@functions {
+
+    [Parameter]
+    private IList<IngredientDto> Ingredients { get; set; }
+
+}

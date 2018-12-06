@@ -10,7 +10,7 @@ namespace Cookbook.Dtos {
         public TimeSpan Duration { get; set; }
         public float EstimatedPrice { get; set; }
         public int Difficulty { get; set; }
-        public IEnumerable<IngredientDto> Ingredients { get; set; }
+        public IList<IngredientDto> Ingredients { get; set; }
         public IEnumerable<RecipeHowToDto> HowTo { get; set; }
         public IEnumerable<CommentDto> Comments { get; set; }
         public IList<TagDto> Tags { get; set; }
