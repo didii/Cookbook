@@ -1,25 +1,8 @@
 ﻿@page "/details/{idString}"
 @inject IDetailsService _detailsService
 @inject IRecipeClientService _recipeClientService
+@inject IChangeTracker<RecipeUpdate> _changeTracker
 
-<div class="btn-group main-toolbar">
-    @if (!_detailsService.IsEditMode) {
-        <button onclick="@OnEditClick" title="Edit recipe" class="btn btn-link">
-            <span class="fa fa-edit xxl"></span>
-        </button>
-    }
-    else {
-        <button onclick="@OnSave" title="Save changes" class="btn btn-success">
-            <span class="fa fa-save xl"></span>
-        </button>
-        <button onclick="@OnRemove" title="Delete recipe" class="btn btn-danger">
-            <span class="fa fa-ban xl"></span>
-        </button>
-        <button onclick="@OnDiscard" title="Discard changes" class="btn btn-secondary">
-            <span class="fa fa-times xl"></span>
-        </button>
-    }
-</div>
 
 @if (Recipe == null) {
     <div class="page-loading-container">
@@ -29,6 +12,23 @@
     </div>
 }
 else {
+    <div class="btn-group main-toolbar">
+        @if (!_detailsService.IsEditMode) {
+            <button onclick="@OnEditClick" title="Edit recipe" class="btn btn-link">
+                <span class="fa fa-edit xxl"></span>
+            </button>
+        } else {
+            <button onclick="@OnSave" title="Save changes" class="btn btn-success">
+                <span class="fa fa-save xl"></span>
+            </button>
+            <button onclick="@OnRemove" title="Delete recipe" class="btn btn-danger">
+                <span class="fa fa-ban xl"></span>
+            </button>
+            <button onclick="@OnDiscard" title="Discard changes" class="btn btn-secondary">
+                <span class="fa fa-times xl"></span>
+            </button>
+        }
+    </div>
     <div class="container-tags">
         <DetailsTags Tags="Recipe.Tags"></DetailsTags>
     </div>
@@ -43,6 +43,7 @@ else {
     protected override async Task OnInitAsync() {
         _detailsService.RecipeId = long.Parse(IdString);
         Recipe = await _recipeClientService.GetAsync(_detailsService.RecipeId);
+        _changeTracker.Reset(Recipe.ToUpdate());
         StateHasChanged();
     }
 
@@ -55,8 +56,10 @@ else {
         _detailsService.IsEditMode = true;
     }
 
-    private void OnSave() {
+    private async Task OnSave() {
         Console.WriteLine("Saving");
+        Recipe = await _recipeClientService.PatchAsync(_detailsService.RecipeId, _changeTracker.PatchDocument.Operations);
+        _changeTracker.Reset(Recipe.ToUpdate());
         _detailsService.IsEditMode = false;
     }
 
