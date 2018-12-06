@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Cookbook.Business.RecipeServices;
 using Cookbook.Dtos;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cookbook.Web.Server.Controllers {
@@ -28,6 +29,11 @@ namespace Cookbook.Web.Server.Controllers {
         public async Task<IActionResult> Update(int id, [FromBody] RecipeUpdate recipe) {
             await _recipeService.UpdateAsync(id, recipe);
             return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<RecipeDto> Patch(int id, [FromBody] JsonPatchDocument<RecipeUpdate> patch) {
+            return await _recipeService.PatchAsync(id, patch);
         }
 
         [HttpDelete("{id}")]

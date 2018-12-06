@@ -6,6 +6,7 @@ using AutoMapper;
 using Cookbook.Db.Repositories;
 using Cookbook.Domain;
 using Cookbook.Dtos;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Cookbook.Business.RecipeServices {
     internal class RecipeService : IRecipeService {
@@ -39,6 +40,17 @@ namespace Cookbook.Business.RecipeServices {
             _repo.Update(entity);
             _mapper.Map(recipe, entity);
             await _repo.SaveAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task<RecipeDto> PatchAsync(int id, JsonPatchDocument<RecipeUpdate> patch) {
+            var entity = await _repo.GetAsync(id);
+            _repo.Update(entity);
+            var entityPatch = _mapper.Map<JsonPatchDocument<Recipe>>(patch);
+            entityPatch.ApplyTo(entity);
+            await _repo.SaveAsync();
+            var result = _mapper.Map<RecipeDto>(entity);
+            return result;
         }
 
         /// <inheritdoc />
