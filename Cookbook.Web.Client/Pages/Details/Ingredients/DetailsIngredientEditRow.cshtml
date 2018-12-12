@@ -1,0 +1,20 @@
+﻿<td>
+    <input type="number" bind="@QuantityValueBind"/>
+</td>
+
+@functions {
+
+    [Parameter]
+    private IngredientDto Ingredient { get; set; }
+
+    private string QuantityValueBind {
+        get => Ingredient.QuantityValue.ToString();
+        set {
+            if (float.TryParse(value, out var @float)) {
+                Ingredient.QuantityValue = @float;
+            } else {
+                Ingredient.QuantityValue = null;
+            }
+        }
+    }
+}

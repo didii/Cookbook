@@ -1,19 +1,25 @@
-﻿<div class="table">
-    <div class="col-md-12">
-        @foreach (var ingredient in Ingredients) {
-        <div class="row">
-            <div class="col-sm-1">@ingredient.Id</div>
-            <div class="col-sm-2">@ingredient.QuantityValue</div>
-            <div class="col-sm-2">@ingredient.Quantity.Name</div>
-            <div class="col-sm-7">@ingredient.Food.Name</div>
-        </div>
-        }
-    </div>
-</div>
+﻿@inject IDetailsService _detailsService
+
+<EditableDetailTable Items="Ingredients" IsEdit="@_detailsService.IsEditMode">
+    <HeaderTemplate>
+        <th colspan="2">Hoeveelheid</th>
+        <th>Ingredient</th>
+    </HeaderTemplate>
+    <RowViewTemplate Context="context">
+        <td class="text-right">@context?.QuantityValue</td>
+        <td>@context?.Quantity?.Name</td>
+        <td>@context?.Food?.Name</td>
+    </RowViewTemplate>
+    <RowEditTemplate Context="context">
+        <DetailsIngredientEditRow Ingredient="@context"></DetailsIngredientEditRow>
+    </RowEditTemplate>
+</EditableDetailTable>
 
 @functions {
 
     [Parameter]
     private IList<IngredientDto> Ingredients { get; set; }
+
+    private IngredientEdit NewIngredient { get; set; }
 
 }
