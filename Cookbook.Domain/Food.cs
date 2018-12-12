@@ -16,8 +16,6 @@ namespace Cookbook.Domain {
 
         public virtual ICollection<Comment> Comments { get; set; }
 
-        public virtual ICollection<Food> Synonyms { get; set; }
-
         /// <inheritdoc />
         public DateTime CreatedOn { get; set; }
 
