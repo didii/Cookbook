@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 
 namespace Cookbook.Dtos {
-    public class IngredientCommon {
+    public class IngredientDto : IDtoBase, IIdProperty, ITracableDto, ITrackableDto, ICommentableDto {
+        /// <inheritdoc />
+        public long Id { get; set; }
+
         public long FoodId { get; set; }
 
         public virtual FoodDto Food { get; set; }
@@ -12,11 +15,6 @@ namespace Cookbook.Dtos {
         public virtual QuantityDto Quantity { get; set; }
 
         public double? QuantityValue { get; set; }
-    }
-
-    public class IngredientDto : IngredientCommon, IDtoBase, IIdProperty, ITracableDto, ITrackableDto, ICommentableDto {
-        /// <inheritdoc />
-        public long Id { get; set; }
 
         /// <inheritdoc />
         public DateTime CreatedOn { get; set; }
@@ -33,7 +31,21 @@ namespace Cookbook.Dtos {
         public virtual IEnumerable<CommentDto> Comments { get; set; }
     }
 
-    public class IngredientCreate : IngredientCommon, IDtoCreateBase { }
+    public class IngredientEdit : IDtoCreateBase, IDtoUpdateBase {
+        public static IngredientEdit FromDto(IngredientDto dto) {
+            if (dto == null)
+                return null;
+            return new IngredientEdit() {
+                FoodId = dto.FoodId,
+                QuantityId = dto.QuantityId,
+                QuantityValue = dto.QuantityValue
+            };
+        }
 
-    public class IngredientUpdate : IngredientCommon, IDtoUpdateBase { }
+        public long FoodId { get; set; }
+
+        public long QuantityId { get; set; }
+
+        public double? QuantityValue { get; set; }
+    }
 }
