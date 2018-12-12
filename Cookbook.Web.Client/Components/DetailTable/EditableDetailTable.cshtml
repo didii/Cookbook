@@ -1,0 +1,80 @@
+﻿@using System.Reflection
+@typeparam TItem
+
+@inject HttpClient http
+@inject IUriHelper uriHelper
+
+<table class="table table-sm table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            @HeaderTemplate
+            @if (IsEdit) {
+                <th scope="col">Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Items) {
+            <tr>
+                @if (IsEdit) {
+                    @RowEditTemplate(item)
+                    <td>
+                        <button onclick="@(_ => OnSave?.Invoke(item))" class="btn btn-primary">
+                            <i class="fa fa-save"></i>
+                        </button>
+                        <button onclick="@(_ => OnDelete?.Invoke(item))" class="btn btn-danger">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </td>
+                } else {
+                    @RowViewTemplate(item)
+                }
+            </tr>
+        }
+    </tbody>
+    @if (IsEdit) {
+        <tfoot>
+            <tr>
+                @RowEditTemplate(NewItem)
+                <td>
+                    <button onclick="@(_ => OnAdd?.Invoke(NewItem))" class="btn btn-success">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </td>
+            </tr>
+        </tfoot>
+    }
+</table>
+
+@functions {
+
+    //Data
+    [Parameter]
+    private IEnumerable<TItem> Items { get; set; }
+
+    //Templates
+    [Parameter]
+    private RenderFragment HeaderTemplate { get; set; }
+
+    [Parameter]
+    private RenderFragment<TItem> RowViewTemplate { get; set; }
+
+    [Parameter]
+    private RenderFragment<TItem> RowEditTemplate { get; set; }
+
+    [Parameter]
+    private bool IsEdit { get; set; }
+
+    //Events
+    [Parameter]
+    private Action<TItem> OnSave { get; set; }
+
+    [Parameter]
+    private Action<TItem> OnDelete { get; set; }
+
+    [Parameter]
+    private Action<TItem> OnAdd { get; set; }
+
+    private TItem NewItem { get; set; } = (TItem)typeof(TItem).GetMethod("Create", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[0]);
+
+}
