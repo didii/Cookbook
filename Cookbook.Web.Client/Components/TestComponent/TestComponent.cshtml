@@ -1,33 +1,31 @@
-﻿@typeparam TItem
+﻿@page "/test"
 
-<h2>Child component</h2>
-
-<table class="table">
-    <thead>
-        <tr>@TableHeader</tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Items) {
-            <tr>@RowTemplate(item)</tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>@TableFooter</tr>
-    </tfoot>
-</table>
+<TestChildComponent Value="_model.SubModel">
+    <Template>
+        <span>@context.Id</span>
+        <span>@context.Name</span>
+        <span>@context.SubSubModel.Id</span>
+        <span>@context.SubSubModel.Name</span>
+    </Template>
+</TestChildComponent>
 
 @functions {
 
-    [Parameter]
-    RenderFragment TableHeader { get; set; }
+    private Model _model;
 
-    [Parameter]
-    RenderFragment<TItem> RowTemplate { get; set; }
-
-    [Parameter]
-    RenderFragment TableFooter { get; set; }
-
-    [Parameter]
-    IEnumerable<TItem> Items { get; set; }
+    protected override void OnInit() {
+        _model = new Model() {
+            Id = 1,
+            Name = "model",
+            SubModel = new SubModel() {
+                Id = 2,
+                Name = "submodel",
+                SubSubModel = new SubSubModel() {
+                    Id = 3,
+                    Name = "subsubmodel"
+                }
+            }
+        };
+    }
 
 }

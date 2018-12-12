@@ -1,0 +1,11 @@
+﻿<h4>Child</h4>
+@Template(Value)
+
+@functions {
+
+    [Parameter]
+    private SubModel Value { get; set; }
+
+    [Parameter]
+    private RenderFragment<SubModel> Template { get; set; }
+}
