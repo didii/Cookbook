@@ -59,7 +59,7 @@
         <tr>
             <td></td>
             @RowTemplate(NewItem)
-            @if (IsTrackable && IsTracable) {
+            @if (IsTrackable || IsTracable) {
                 <td></td>
                 <td></td>
             }
@@ -95,7 +95,7 @@
     [Parameter]
     private Action<TItem> OnAdd { get; set; }
 
-    private TItem NewItem { get; set; } = (TItem)Activator.CreateInstance(typeof(TItem));
+    private TItem NewItem { get; set; } = Activator.CreateInstance<TItem>();
 
     private bool IsTracable => typeof(ITracableDto).IsAssignableFrom(typeof(TItem));
 
