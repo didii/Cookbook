@@ -4,6 +4,7 @@ A recipe manager made with Blazor, Asp.Net Core and EF Core.
 ## Project setup
 
 ![Dependencies](Dependencies.png)
+*Note: this image is outdated, though the structure is similar*
 
 ### 01 Domain Layer
 
@@ -30,19 +31,31 @@ Contains the server-side business logic and DTO's.
 * `Cookbook.Dtos` contains all DTO objects and related contracts/interfaces needed for both front and backend.
 * `Cookbook.Business` contains server-side business logic that maps the Domain to the Dto and any logic that has knowledge about what exactly the DTO's are.
 
-### 05 Server
-
-Contains the ASP.Net code which is mostly the API and a single Blazor page call.
-
-### 06 Client
+### 05 Client
 
 Contains the frontend Blazor application.
 
 * `Cookbook.Web.Client.Services` encapsulates all calls to the server api.
 * `Cookbook.Web.Client` contains the actual blazor code.
 
+### 06 Server
+
+Contains the ASP.Net code which is mostly the API and a single Blazor page call.
+
+## Debugging
+
+To debug the Blazor application follow the following steps:
+
+1. Build the app in Debug configuration
+2. Open chrome with this command (filling in the correct port): `%programfiles(x86)%\Google\Chrome\Application\chrome.exe --remote-debugging-port=9222 http://localhost:52734`
+3. Press `Alt+Shift+D` to open the debug window
+    1. If this doesn't work, make sure your extensions aren't using the shortcut itself
+4. In the sources tab you can see the `.dll` files where you can place breakpoints
+
+For more info see: https://blazor.net/docs/debugging.html
+
 ## Links
 
-Blazor: https://blazor.net/
-ASP.Net Core: https://www.asp.net/core
-EF Core: https://docs.microsoft.com/en-us/ef/core/
+* Blazor: https://blazor.net/
+* ASP.Net Core: https://www.asp.net/core
+* EF Core: https://docs.microsoft.com/en-us/ef/core/
