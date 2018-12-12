@@ -12,6 +12,10 @@ namespace Cookbook.Db.Repositories {
 
         /// <inheritdoc />
         protected override IQueryable<Recipe> BaseQuery => Set.Include(x => x.AppliedTags)
-                                                              .ThenInclude(x => x.Tag);
+                                                                .ThenInclude(x => x.Tag)
+                                                              .Include(x => x.Ingredients)
+                                                                .ThenInclude(x => x.Food)
+                                                              .Include(x => x.Ingredients)
+                                                                .ThenInclude(x => x.Quantity);
     }
 }
