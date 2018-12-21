@@ -14,15 +14,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Items) {
+        @for (int i = 0; i < Items.Count; i++) {
+            var item = Items[i];
             <tr>
                 @if (IsEdit) {
                     @RowEditTemplate(item)
                     <td>
-                        <button onclick="@(_ => OnSave?.Invoke(item))" class="btn btn-primary">
+                        <button onclick="@(_ => OnSave(i, item))" class="btn btn-primary">
                             <i class="fa fa-save"></i>
                         </button>
-                        <button onclick="@(_ => OnDelete?.Invoke(item))" class="btn btn-danger">
+                        <button onclick="@(_ => OnDelete(i, item))" class="btn btn-danger">
                             <i class="fa fa-times"></i>
                         </button>
                     </td>
@@ -37,7 +38,7 @@
             <tr>
                 @RowEditTemplate(NewItem)
                 <td>
-                    <button onclick="@(_ => OnAdd?.Invoke(NewItem))" class="btn btn-success">
+                    <button onclick="@(_ => OnAdd(NewItem))" class="btn btn-success">
                         <i class="fa fa-plus"></i>
                     </button>
                 </td>
@@ -50,7 +51,7 @@
 
     //Data
     [Parameter]
-    private IEnumerable<TItem> Items { get; set; }
+    private IList<TItem> Items { get; set; }
 
     //Templates
     [Parameter]
@@ -65,16 +66,45 @@
     [Parameter]
     private bool IsEdit { get; set; }
 
+    [Parameter]
+    private Func<TItem> NewItemFactory { get; set; }
+
     //Events
     [Parameter]
-    private Action<TItem> OnSave { get; set; }
+    private Action<ItemChangedArgs<TItem>> Changed { get;set; }
 
-    [Parameter]
-    private Action<TItem> OnDelete { get; set; }
+    private TItem NewItem { get; set; }
 
-    [Parameter]
-    private Action<TItem> OnAdd { get; set; }
+    private void OnSave(int idx, TItem item) {
+        var args = new ItemChangedArgs<TItem>() {
+            Type = ItemChangedType.Changed,
+            Item = item,
+            Index = idx
+        };
+        Changed?.Invoke(args);
+    }
 
-    private TItem NewItem { get; set; } = (TItem)typeof(TItem).GetMethod("Create", BindingFlags.Static | BindingFlags.Public).Invoke(null, new object[0]);
+    private void OnDelete(int idx, TItem item) {
+        var args = new ItemChangedArgs<TItem>() {
+            Type = ItemChangedType.Deleted,
+            Item = item,
+            Index = idx
+        };
+        Changed?.Invoke(args);
+    }
+
+    private void OnAdd(TItem item) {
+        var args = new ItemChangedArgs<TItem>() {
+            Type = ItemChangedType.Added,
+            Item = item
+        };
+        Changed?.Invoke(args);
+    }
+
+    protected override void OnInit() {
+        if (NewItemFactory != null) {
+            NewItem = NewItemFactory();
+        }
+    }
 
 }
