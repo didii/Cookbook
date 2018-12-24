@@ -15,5 +15,9 @@ namespace Cookbook.Web.Client.JsLib {
         public static Task Show(this ElementRef elementRef) {
             return JSRuntime.Current.InvokeAsync<object>("jsLib.showElement", elementRef);
         }
+
+        public static Task CreateAutocomplete(this ElementRef input) {
+            return JSRuntime.Current.InvokeAsync<object>("jsLib.createAutocomplete", input);
+        }
     }
 }
