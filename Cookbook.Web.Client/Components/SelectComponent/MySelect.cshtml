@@ -1,0 +1,43 @@
+﻿@typeparam TItem
+
+<select class="form-control">
+    @TopElements
+    @if (Items != null) {
+        @foreach (var item in Items) {
+             <option value="@(((IIdProperty)item).Id)">Test</option>
+         }
+    }
+    @BottomElements
+</select>
+
+@functions {
+
+    [Parameter]
+    private IList<SelectValue<TItem>> Items { get; set; }
+
+    [Parameter]
+    private Action<SelectChangedArgs<TItem>> SelectionChanged { get; set; }
+
+    [Parameter]
+    private RenderFragment TopElements { get; set; }
+
+    [Parameter]
+    private RenderFragment BottomElements { get; set; }
+
+    private void OnSelected(int idx, TItem item) {
+        var args = new SelectChangedArgs<TItem>() {
+            SelectedIndex = idx,
+            SelectedItem = item
+        };
+        SelectionChanged?.Invoke(args);
+    }
+
+    protected override void OnInit() {
+        // Do some checks that are not yet supported in Blazor compiler
+        //TItem must implement IIdProperty
+        var idInterface = typeof(TItem).GetInterface(nameof(IIdProperty));
+        if (idInterface == null)
+            throw new InvalidCastException("TItem must be convertible to IIdProperty");
+    }
+
+}
