@@ -1,6 +1,6 @@
 ﻿@inject IDetailsService _detailsService
 
-<EditableDetailTable Items="Ingredients" IsEdit="@_detailsService.IsEditMode">
+<EditableDetailTable Items="Ingredients" IsEdit="@_detailsService.IsEditMode" NewItemFactory="@CreateNewIngredient" Changed="@OnChange">
     <HeaderTemplate>
         <th colspan="2">Hoeveelheid</th>
         <th>Ingredient</th>
@@ -11,7 +11,9 @@
         <td>@context?.Food?.Name</td>
     </RowViewTemplate>
     <RowEditTemplate Context="context">
-        <DetailsIngredientEditRow Ingredient="@context"></DetailsIngredientEditRow>
+        <DetailsIngredientEditRow Ingredient="@context"/>
+        <td>@context.Quantity.Name</td>
+        <DetailsFoodEditRow Ingredient="@context"/>
     </RowEditTemplate>
 </EditableDetailTable>
 
@@ -21,5 +23,26 @@
     private IList<IngredientDto> Ingredients { get; set; }
 
     private IngredientEdit NewIngredient { get; set; }
+
+    private IngredientDto CreateNewIngredient() {
+        return new IngredientDto() {
+            Food = new FoodDto(),
+            Quantity = new QuantityDto() { QuantityType = new QuantityTypeDto() }
+        };
+    }
+
+    private void OnChange(ItemChangedArgs<IngredientDto> args) {
+        switch (args.Type) {
+            case ItemChangedType.Added:
+                Console.WriteLine("Added");
+                break;
+            case ItemChangedType.Changed:
+                Console.WriteLine("Changed");
+                break;
+            case ItemChangedType.Deleted:
+                Console.WriteLine("Deleted");
+                break;
+        }
+    }
 
 }

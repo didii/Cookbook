@@ -1,4 +1,4 @@
-﻿@page "/details/{idString}"
+﻿@page "/details/{id:long}"
 @inject IDetailsService _detailsService
 @inject IRecipeClientService _recipeClientService
 @inject IChangeTracker<RecipeUpdate> _changeTracker
@@ -49,7 +49,7 @@ else {
 @functions {
 
     protected override async Task OnInitAsync() {
-        _detailsService.RecipeId = long.Parse(IdString);
+        _detailsService.RecipeId = Id;
         Recipe = await _recipeClientService.GetAsync(_detailsService.RecipeId);
         _changeTracker.Reset(Recipe.ToUpdate());
         StateHasChanged();
@@ -58,7 +58,10 @@ else {
     private RecipeDto Recipe { get; set; }
 
     [Parameter]
-    private string IdString { get; set; }
+    private long Id {
+        get { return _detailsService.RecipeId; }
+        set { _detailsService.RecipeId = value; }
+    }
 
     private void OnEditClick() {
         _detailsService.IsEditMode = true;

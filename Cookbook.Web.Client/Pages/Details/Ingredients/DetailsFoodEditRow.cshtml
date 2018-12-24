@@ -1,0 +1,34 @@
+﻿@inject IFoodClientService _foodService
+
+<td>
+    @*<MySelect Items="Food" ShowAs="@(food => food.Name)">
+        <TopElements>
+            <option value="" selected hidden disabled>Choose...</option>
+        </TopElements>
+    </MySelect>*@
+</td>
+
+@functions {
+
+    private ElementRef SelectElement;
+
+    [Parameter]
+    private IngredientDto Ingredient { get; set; }
+
+    private IList<FoodDto> Food { get; set; }
+
+    private void OnSelectionChanged(SelectChangedArgs<FoodDto> args) {
+        switch (args.Type) {
+            case SelectedChangedType.FromCollection:
+                break;
+            case SelectedChangedType.Other:
+                break;
+        }
+        Ingredient.Food = args.SelectedItem;
+    }
+
+    protected override async Task OnInitAsync() {
+        Food = (await _foodService.GetAll()).ToList();
+    }
+
+}
