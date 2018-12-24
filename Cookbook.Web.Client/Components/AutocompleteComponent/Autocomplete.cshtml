@@ -1,0 +1,13 @@
+﻿<input ref="Input" id="input"/>
+
+<button onclick="@OnClick">Init</button>
+
+@functions {
+
+    private ElementRef Input;
+
+    private async Task OnClick() {
+        await Input.CreateAutocomplete();
+    }
+
+}
